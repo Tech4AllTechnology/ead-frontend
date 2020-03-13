@@ -71,17 +71,30 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '',
+    path: '/',
     component: Layout,
+    redirect: '/dashboard',
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/users/users'),
-        name: 'user',
-        meta: { title: 'user', icon: 'user', affix: true, noCache: true }
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: 'Dashboard',
+        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
       }
     ]
   },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/users/users'),
+  //       name: 'user',
+  //       meta: { title: 'user', icon: 'user', affix: true, noCache: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/users',
     component: Layout,
@@ -90,7 +103,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/users/users'),
         name: 'user',
-        meta: { title: 'user', icon: 'user', affix: true, noCache: true }
+        meta: { title: 'user', icon: 'user', noCache: true }
       }
     ]
   },
@@ -102,7 +115,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/softwares/software'),
         name: 'softwares',
-        meta: { title: 'softwares', icon: 'component', affix: true, noCache: true }
+        meta: { title: 'softwares', icon: 'component', noCache: true }
       }
     ]
   },
@@ -114,7 +127,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/space/space'),
         name: 'space',
-        meta: { title: 'space', icon: 'component', affix: true, noCache: true }
+        meta: { title: 'space', icon: 'component', noCache: true }
       }
     ]
   },
@@ -126,7 +139,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/program/program'),
         name: 'programs',
-        meta: { title: 'programs', icon: 'component', affix: true, noCache: true }
+        meta: { title: 'programs', icon: 'component', noCache: true }
       }
     ]
   },
@@ -138,7 +151,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/course/course'),
         name: 'courses',
-        meta: { title: 'courses', icon: 'component', affix: true, noCache: true }
+        meta: { title: 'courses', icon: 'component', noCache: true }
       }
     ]
   },
@@ -150,7 +163,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/class/class'),
         name: 'clazz',
-        meta: { title: 'clazz', icon: 'component', affix: true, noCache: true }
+        meta: { title: 'clazz', icon: 'component', noCache: true }
       }
     ]
   },
@@ -162,7 +175,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/scheduling/scheduling'),
         name: 'scheduling',
-        meta: { title: 'schedulings', icon: 'component', affix: true, noCache: true }
+        meta: { title: 'schedulings', icon: 'component', noCache: true }
       }
     ]
   },
@@ -174,7 +187,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/scheduling/scheduling-pendencies'),
         name: 'scheduling_pendencies',
-        meta: { title: 'checkPendencies', icon: 'component', affix: true, noCache: true }
+        meta: { title: 'checkPendencies', icon: 'component', noCache: true }
       }
     ]
   },
@@ -186,7 +199,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/users/lack'),
         name: 'lack',
-        meta: { title: 'lack', icon: 'component', affix: true, noCache: true }
+        meta: { title: 'lack', icon: 'component', noCache: true }
       }
     ]
   }

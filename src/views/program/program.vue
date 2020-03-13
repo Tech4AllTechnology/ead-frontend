@@ -4,7 +4,7 @@
       {{ $t('program.addProgram') }}
     </el-button>
 
-    <el-table :data="programList" style="width: 100%;margin-top:30px;" border max-height="250">
+    <el-table :data="programList" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="Nome do Curso" width="220" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
@@ -13,6 +13,11 @@
       <el-table-column align="center" label="Status" fixed>
         <template slot-scope="scope">
           {{ scope.row.status }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Reconhecido pelo MEC" fixed>
+        <template slot-scope="scope">
+          {{ scope.row.recognized_by_mec}}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Operações" fixed>
@@ -28,7 +33,7 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Curso':'Novo Curso'">
-      <el-form ref="program" :model="program" :rules="programRules" label-width="80px" label-position="left">
+      <el-form ref="program" :model="program" :rules="programRules" label-width="120px" label-position="left">
         <el-form-item label="Nome" prop="name">
           <el-input v-model="program.name" placeholder="Nome" />
         </el-form-item>
@@ -38,6 +43,20 @@
             <el-option value="0" label="Inativo">Inativo</el-option>
           </el-select>
         </el-form-item>
+          <el-form-item label="Reconhecido pelo MEC" prop="recognized_by_mec">
+              <el-select v-model="program.recognized_by_mec">
+                  <el-option value="1" label="Ativo">Sim</el-option>
+                  <el-option value="0" label="Inativo">Não</el-option>
+              </el-select>
+          </el-form-item>
+          <el-form-item label="Tipo do Curso" prop="program_type">
+              <el-select v-model="program.program_type">
+                  <el-option value="1" label="Graduação">Graduação</el-option>
+                  <el-option value="2" label="Pós-Graduação">Pós-Graduação</el-option>
+                  <el-option value="3" label="Técnico">Técnico</el-option>
+                  <el-option value="4" label="Livre">Livre</el-option>
+              </el-select>
+          </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
@@ -59,7 +78,9 @@ const defaultProgram = {
   id: '',
   name: '',
   code: '',
-  status: ''
+  status: '',
+  recognized_by_mec: '',
+  program_type: ''
 }
 
 const status = {
@@ -71,6 +92,32 @@ const sendStatus = {
     'Ativo': 1,
     'Inativo': 0
 }
+
+const recognizedByMec = {
+    1: 'Sim',
+    0: 'Não'
+}
+
+const sendrecognizedByMec = {
+    'Sim': 1,
+    'Não': 0
+}
+
+const programType = {
+    1 : 'Graduação',
+    2 : 'Pós-Graduação',
+    3: 'Técnico',
+    4: 'Livre'
+}
+
+const sendProgramType = {
+    'Graduação' : 1,
+    'Pós-Graduação' : 2,
+    'Técnico' : 3,
+    'Livre': 4
+}
+
+
 
 export default {
   data() {
@@ -93,6 +140,23 @@ export default {
               callback(new Error('Selecione um status válido.'))
           }
       }
+      const validateReconizedByMEC = (rule, value, callback) => {
+          var statusValidate = [1, 0, '1', '0', 'Sim', 'Não']
+          if (statusValidate.includes(value)) {
+              callback()
+          } else {
+              callback(new Error('Informe se o curso é reconhecido ou não pelo MEC.'))
+          }
+      }
+
+      const validateProgramType = (rule, value, callback) => {
+          callback()
+          // if (this.programType.includes(value)) {
+          //     callback()
+          // } else {
+          //     callback(new Error('Informe um tipo de curso correto.'))
+          // }
+      }
 
     return {
       loading: false,
@@ -102,10 +166,16 @@ export default {
       checkStrictly: false,
       programList: [],
       statusList: Object.assign({}, status),
+      recognizedByMec: Object.assign({}, recognizedByMec),
+      programType: Object.assign({}, programType),
       sendStatusList: Object.assign({}, sendStatus),
+      sendrecognizedByMec: Object.assign({}, sendrecognizedByMec),
+      sendProgramType: Object.assign({}, sendProgramType),
       programRules: {
           status: [{ required: true, trigger: 'blur', validator: validateStatus }],
-          name: [{ required: true, trigger: 'blur', validator: validateName }]
+          name: [{ required: true, trigger: 'blur', validator: validateName }],
+          recognized_by_mec: [{ required: true, trigger: 'blur', validator: validateReconizedByMEC }],
+          program_type: [{ required: true, trigger: 'blur', validator: validateProgramType }],
       }
     }
   },
@@ -171,7 +241,7 @@ export default {
                                   if (this.programList[index].id === this.program.id) {
                                       this.programList.splice(index, 1, Object.assign({}, this.changeType(this.program)))
                                   }
-                              }
+                              }prof
                               resolve()
                           }).catch(error => {
                               reject(error)
@@ -182,6 +252,7 @@ export default {
                           addProgram(this.changeSendType(this.program)).then(response => {
                               const { data } = response
                               this.program.id = data.key
+                              this.program.code = data.code
                               this.programList.push(this.changeType(this.program))
                               resolve()
                           }).catch(error => {
@@ -212,17 +283,26 @@ export default {
           if (this.statusList[programs[index].status]) {
             programs[index].status = this.statusList[programs[index].status]
           }
+
+          if (this.recognizedByMec[[programs[index].recognized_by_mec]]) {
+              programs[index].recognized_by_mec = this.recognizedByMec[programs[index].recognized_by_mec]
+          }
+
         }
         return programs
       }
       if (this.statusList[programs.status]) {
         programs.status = this.statusList[programs.status]
       }
+
+      if (this.recognizedByMec[programs.recognized_by_mec]) {
+          programs.recognized_by_mec = this.recognizedByMec[programs.recognized_by_mec]
+      }
+
       return programs
     },
       checkIfCodeExists(code, program_id) {
           for (let index = 0; index < this.programList.length; index++) {
-              // eslint-disable-next-line eqeqeq
               if (this.programList[index].code == code && this.programList[index].id != program_id) {
                   return true
               }
@@ -231,7 +311,6 @@ export default {
       },
       checkIfNameExists(name, program_id) {
           for (let index = 0; index < this.programList.length; index++) {
-              // eslint-disable-next-line eqeqeq
               if (this.programList[index].name == name && this.programList[index].id != program_id) {
                   return true
               }

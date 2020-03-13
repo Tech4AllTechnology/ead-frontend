@@ -102,7 +102,7 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = '/index'
+        this.redirect = '/'
       },
       immediate: true
     }

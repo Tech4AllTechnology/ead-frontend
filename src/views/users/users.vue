@@ -132,9 +132,9 @@
           <el-select v-model="user.state" required>
             <el-option
               v-for="item in stateList"
-              :key="item.ID"
-              :label="item.Name"
-              :value="item.ID"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
@@ -342,6 +342,7 @@ export default {
     async getStates() {
       const sta = await getStates()
       this.stateList = sta.data
+      console.log(this.stateList)
     },
     handleaddUser() {
       this.user = Object.assign({}, defaultUser)
