@@ -151,11 +151,11 @@ export default {
 
       const validateProgramType = (rule, value, callback) => {
           callback()
-          // if (this.programType.includes(value)) {
-          //     callback()
-          // } else {
-          //     callback(new Error('Informe um tipo de curso correto.'))
-          // }
+          if (this.programType) {
+              callback()
+          } else {
+              callback(new Error('Informe um tipo de curso correto.'))
+          }
       }
 
     return {
@@ -212,7 +212,7 @@ export default {
       this.program = deepClone(scope.row)
     },
     handleDelete({ $index, row }) {
-      this.$confirm('Deseja desabilitar o curso?', 'Warning', {
+      this.$confirm('Deseja desabilitar o curso? \n Todas as matérias e turmas serão canceladas.', 'Atenção', {
         confirmButtonText: 'Confirmar',
         cancelButtonText: 'Cancelar',
         type: 'warning'
@@ -241,7 +241,7 @@ export default {
                                   if (this.programList[index].id === this.program.id) {
                                       this.programList.splice(index, 1, Object.assign({}, this.changeType(this.program)))
                                   }
-                              }prof
+                              }
                               resolve()
                           }).catch(error => {
                               reject(error)
@@ -288,6 +288,10 @@ export default {
               programs[index].recognized_by_mec = this.recognizedByMec[programs[index].recognized_by_mec]
           }
 
+          if (this.programType[[programs[index].program_type]]) {
+              programs[index].program_type = this.programType[programs[index].program_type]
+          }
+
         }
         return programs
       }
@@ -297,6 +301,10 @@ export default {
 
       if (this.recognizedByMec[programs.recognized_by_mec]) {
           programs.recognized_by_mec = this.recognizedByMec[programs.recognized_by_mec]
+      }
+
+      if (this.programType[programs.program_type]) {
+          programs.program_type = this.programType[programs.program_type]
       }
 
       return programs
@@ -321,6 +329,15 @@ export default {
           if (this.sendStatusList[program.status]  || program.status == 'Inativo') {
               program.status = this.sendStatusList[program.status]
           }
+
+          if (this.sendProgramType[program.program_type]) {
+              program.program_type = this.sendProgramType[program.program_type]
+          }
+
+          if (this.sendrecognizedByMec[program.recognized_by_mec]) {
+              program.recognized_by_mec = this.sendrecognizedByMec[program.recognized_by_mec]
+          }
+
           return program
       }
   }

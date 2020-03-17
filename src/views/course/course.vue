@@ -4,7 +4,7 @@
       {{ $t('course.addCourse') }}
     </el-button>
 
-    <el-table :data="courseList" style="width: 100%;margin-top:30px;" border max-height="250">
+    <el-table :data="courseList" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="Nome da Matéria" width="220" fixed>
         <template slot-scope="scope">
           {{ scope.row.name }}
@@ -18,11 +18,6 @@
       <el-table-column align="center" label="Status" fixed>
         <template slot-scope="scope">
           {{ scope.row.status }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Curso" fixed>
-        <template slot-scope="scope">
-          {{ scope.row.program.name }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Crédito" fixed>
@@ -50,19 +45,16 @@
         <el-form-item label="Crédito" prop="credit">
           <el-input-number v-model="course.credit" :min="1" placeholder="Crédito" required />
         </el-form-item>
-        <el-form-item label="Código" prop="code">
-          <el-input v-model="course.code" placeholder="Código" required />
-        </el-form-item>
-        <el-form-item ref="program.id" label="Curso" prop="program.id">
-          <el-select v-model="course.program.id" required>
-            <el-option
-              v-for="item in programList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item ref="program.id" label="Curso" prop="program.id">-->
+          <!--<el-select v-model="course.program.id" required>-->
+            <!--<el-option-->
+              <!--v-for="item in programList"-->
+              <!--:key="item.id"-->
+              <!--:label="item.name"-->
+              <!--:value="item.id"-->
+            <!--/>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <el-form-item label="Status" prop="status">
           <el-select v-model="course.status" required>
             <el-option value="1" label="Ativo">Ativo</el-option>
@@ -84,6 +76,22 @@
             <el-option value="10" label="10º">10º</el-option>
           </el-select>
         </el-form-item>
+
+      <el-form-item label="Cursos" prop="program">
+        <div v-for="(line, index) in course.programsItens" :key="index" class="row" style="margin-top: 10px">
+                <div class="row">
+                        <el-select v-model="line.program_id" label="Courses">
+                        <el-option v-for="item in programList" :key="item.id"
+                        :label="item.name" :value="item.id">
+                        </el-option>
+                        </el-select>
+                    <el-button type="danger" round @click="removeLine(index)" icon="el-icon-delete" />
+                    <el-button type="primary" round v-if="index + 1 === course.programsItens.length" @click="addLine" icon="el-icon-plus" />
+                </div>
+              </div>
+      </el-form-item>
+
+
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
@@ -109,10 +117,7 @@ const defaultCourse = {
   credit: '',
   status: '',
   period: '',
-  program: {
-    id: '',
-    name: ''
-  }
+  programsItens: []
 }
 
 const defaultProgram = {
@@ -148,29 +153,9 @@ export default {
         callback()
       }
     }
-    const validateProgram = (rule, value, callback) => {
-      if (value) {
-        if (this.checkIfProgramExists(value)) {
-          callback(new Error('Selecione um curso válido.'))
-        } else {
-          callback()
-        }
-      } else {
-        callback(new Error('Selecione um curso válido.'))
-      }
-    }
-    const validateCode = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('O campo não pode ser vazio.'))
-      } else {
-        if (this.checkIfCodeExists(value, this.course.id)) {
-          callback(new Error('Já existe uma matéria cadastrada com esse código.'))
-        } else {
-          callback()
-        }
-      }
-    }
     return {
+      blockRemoval: true,
+      programsItens: [],
       course: Object.assign({}, defaultCourse),
       program: Object.assign({}, defaultProgram),
       dialogVisible: false,
@@ -183,8 +168,6 @@ export default {
       courseRules: {
         status: [{ required: true, trigger: 'blur', validator: validateStatus }],
         credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-        'program.id': [{ required: true, trigger: 'blur', validator: validateProgram }],
-        code: [{ required: true, trigger: 'blur', validator: validateCode }],
         period: [{ required: true, trigger: 'blur', validator: validateEmpty }]
       }
     }
@@ -198,6 +181,12 @@ export default {
     // Mock: get all routes and roles list from server
     this.getProgram()
     this.getCourse()
+  },
+  watch: {
+      programsItens () {
+          console.log('watch function')
+          this.blockRemoval = this.course.programsItens.length <= 1
+      }
   },
   methods: {
     closeDialog() {
@@ -214,6 +203,7 @@ export default {
     },
     handleaddCourse() {
       this.course = Object.assign({}, defaultCourse)
+      this.addLine()
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
@@ -225,6 +215,7 @@ export default {
       this.dialogVisible = true
       this.checkStrictly = true
       this.course = deepClone(scope.row)
+      this.addLine()
     },
     handleDelete({ $index, row }) {
       this.$confirm('Deseja remover a matéria?', 'Warning', {
@@ -309,23 +300,14 @@ export default {
       if (this.sendStatusList[course.status] || course.status == 'Inativo') {
         course.status = this.sendStatusList[course.status]
       }
-      for (let index = 0; index < this.programList.length; index++) {
-        // eslint-disable-next-line eqeqeq
-        if (this.programList[index].id == course.program.id) {
-          course.program.name = this.programList[index].name
-        }
-      }
+      // for (let index = 0; index < this.programList.length; index++) {
+      //   // eslint-disable-next-line eqeqeq
+      //   if (this.programList[index].id == course.program.id) {
+      //     course.program.name = this.programList[index].name
+      //   }
+      // }
 
       return course
-    },
-    checkIfProgramExists(id) {
-      for (let index = 0; index < this.programList.length; index++) {
-        // eslint-disable-next-line eqeqeq
-        if (this.programList[index].id == id) {
-          return false
-        }
-      }
-      return true
     },
     checkIfCodeExists(code, course_id) {
       for (let index = 0; index < this.courseList.length; index++) {
@@ -335,7 +317,29 @@ export default {
         }
       }
       return false
-    }
+    },
+
+
+
+      addLine () {
+        console.log(this.course.programsItens)
+          let checkEmptyLines = this.course.programsItens.filter(line => line.program_id === null)
+          if (checkEmptyLines.length >= 1 && this.course.programsItens.length > 0) {
+              return
+          }
+          this.course.programsItens.push({
+              program_id: null,
+              name: null
+          })
+      },
+      removeLine (lineId) {
+        console.log(this.course.programsItens)
+          console.log(lineId)
+          if (this.course.programsItens.length > 1) {
+              console.log('Entrou no item')
+              this.course.programsItens.splice(lineId, 1)
+          }
+      }
   }
 }
 </script>

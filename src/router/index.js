@@ -107,30 +107,30 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/software',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/softwares/software'),
-        name: 'softwares',
-        meta: { title: 'softwares', icon: 'component', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/space',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/space/space'),
-        name: 'space',
-        meta: { title: 'space', icon: 'component', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/software',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/softwares/software'),
+  //       name: 'softwares',
+  //       meta: { title: 'softwares', icon: 'component', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/space',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/space/space'),
+  //       name: 'space',
+  //       meta: { title: 'space', icon: 'component', noCache: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/program',
     component: Layout,
@@ -154,55 +154,55 @@ export const constantRoutes = [
         meta: { title: 'courses', icon: 'component', noCache: true }
       }
     ]
-  },
-  {
-    path: '/class',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/class/class'),
-        name: 'clazz',
-        meta: { title: 'clazz', icon: 'component', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/scheduling',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/scheduling/scheduling'),
-        name: 'scheduling',
-        meta: { title: 'schedulings', icon: 'component', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/scheduling-pendencies',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/scheduling/scheduling-pendencies'),
-        name: 'scheduling_pendencies',
-        meta: { title: 'checkPendencies', icon: 'component', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/lack',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/users/lack'),
-        name: 'lack',
-        meta: { title: 'lack', icon: 'component', noCache: true }
-      }
-    ]
   }
+  // {
+  //   path: '/class',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/class/class'),
+  //       name: 'clazz',
+  //       meta: { title: 'clazz', icon: 'component', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/scheduling',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/scheduling/scheduling'),
+  //       name: 'scheduling',
+  //       meta: { title: 'schedulings', icon: 'component', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/scheduling-pendencies',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/scheduling/scheduling-pendencies'),
+  //       name: 'scheduling_pendencies',
+  //       meta: { title: 'checkPendencies', icon: 'component', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/lack',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/users/lack'),
+  //       name: 'lack',
+  //       meta: { title: 'lack', icon: 'component', noCache: true }
+  //     }
+  //   ]
+  // }
 
 ]
 
@@ -214,36 +214,36 @@ export const asyncRoutes = [
   /** when your routing map is too long, you can split it into small modules **/
   // chartsRouter,
   // tableRouter,
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    name: 'relatorio',
-    meta: {
-      title: 'relatorios',
-      icon: 'excel'
-    },
-    children: [
-      {
-        path: 'export-excel',
-        component: () => import('@/views/excel/exportExcel'),
-        name: 'spaceUsage',
-        meta: { title: 'spaceUsage' }
-      },
-      {
-        path: 'export-selected-excel',
-        component: () => import('@/views/excel/selectExcel'),
-        name: 'studentEvasion',
-        meta: { title: 'studentEvasion' }
-      },
-      {
-        path: 'export-merge-header',
-        component: () => import('@/views/excel/mergeHeader'),
-        name: 'FrequenciaDosEspacos',
-        meta: { title: 'frequenciaDosEspacos' }
-      }
-    ]
-  },
+  // {
+  //   path: '/excel',
+  //   component: Layout,
+  //   redirect: '/excel/export-excel',
+  //   name: 'relatorio',
+  //   meta: {
+  //     title: 'relatorios',
+  //     icon: 'excel'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'export-excel',
+  //       component: () => import('@/views/excel/exportExcel'),
+  //       name: 'spaceUsage',
+  //       meta: { title: 'spaceUsage' }
+  //     },
+  //     {
+  //       path: 'export-selected-excel',
+  //       component: () => import('@/views/excel/selectExcel'),
+  //       name: 'studentEvasion',
+  //       meta: { title: 'studentEvasion' }
+  //     },
+  //     {
+  //       path: 'export-merge-header',
+  //       component: () => import('@/views/excel/mergeHeader'),
+  //       name: 'FrequenciaDosEspacos',
+  //       meta: { title: 'frequenciaDosEspacos' }
+  //     }
+  //   ]
+  // },
 
   // {
   //   path: '/zip',
