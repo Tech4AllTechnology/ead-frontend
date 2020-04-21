@@ -79,22 +79,18 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+          meta: {title: 'dashboard', icon: 'dashboard', affix: true}
       }
     ]
-  },
-  // {
-  //   path: '/',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/users/users'),
-  //       name: 'user',
-  //       meta: { title: 'user', icon: 'user', affix: true, noCache: true }
-  //     }
-  //   ]
-  // },
+  }
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+    /** when your routing map is too long, you can split it into small modules **/
   {
     path: '/users',
     component: Layout,
@@ -103,34 +99,10 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/users/users'),
         name: 'user',
-        meta: { title: 'user', icon: 'user', noCache: true }
+          meta: {title: 'user', icon: 'user', noCache: true, roles: ['admin']}
       }
     ]
   },
-  // {
-  //   path: '/software',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/softwares/software'),
-  //       name: 'softwares',
-  //       meta: { title: 'softwares', icon: 'component', noCache: true }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/space',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/space/space'),
-  //       name: 'space',
-  //       meta: { title: 'space', icon: 'component', noCache: true }
-  //     }
-  //   ]
-  // },
   {
     path: '/program',
     component: Layout,
@@ -139,7 +111,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/program/program'),
         name: 'programs',
-        meta: { title: 'programs', icon: 'component', noCache: true }
+          meta: {title: 'programs', icon: 'component', noCache: true, roles: ['admin']}
       }
     ]
   },
@@ -151,67 +123,34 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/course/course'),
         name: 'courses',
-        meta: { title: 'courses', icon: 'component', noCache: true }
+          meta: {title: 'courses', icon: 'component', noCache: true, roles: ['admin']}
       }
     ]
-  }
-  // {
-  //   path: '/class',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/class/class'),
-  //       name: 'clazz',
-  //       meta: { title: 'clazz', icon: 'component', noCache: true }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/scheduling',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/scheduling/scheduling'),
-  //       name: 'scheduling',
-  //       meta: { title: 'schedulings', icon: 'component', noCache: true }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/scheduling-pendencies',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/scheduling/scheduling-pendencies'),
-  //       name: 'scheduling_pendencies',
-  //       meta: { title: 'checkPendencies', icon: 'component', noCache: true }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/lack',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/users/lack'),
-  //       name: 'lack',
-  //       meta: { title: 'lack', icon: 'component', noCache: true }
-  //     }
-  //   ]
-  // }
-
-]
-
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
-*/
-export const asyncRoutes = [
-  /** when your routing map is too long, you can split it into small modules **/
+  },
+    {
+        path: '/university-campus',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/university-campus/universityCampus'),
+                name: 'university_campus',
+                meta: {title: 'university_campus', icon: 'component', noCache: true, roles: ['admin']}
+      }
+    ]
+    },
+    {
+        path: '/clazz',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/class/class'),
+                name: 'clazz',
+                meta: {title: 'clazz', icon: 'component', noCache: true, roles: ['admin']}
+            }
+        ]
+    },
   // chartsRouter,
   // tableRouter,
   // {

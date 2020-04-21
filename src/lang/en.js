@@ -76,7 +76,8 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
     externalLink: 'External Link',
-    lack: 'Adicionar Falta'
+      lack: 'Adicionar Falta',
+      university_campus: 'Cadastro de Polos'
   },
   navbar: {
     logOut: 'Log Out',
@@ -121,7 +122,7 @@ export default {
   },
   software: {
     addSoftware: 'Novo Software',
-    edit: 'Editar Software',
+      edit: 'Editar ',
     tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
     delete: 'Deletar',
     confirm: 'Confirmar',
@@ -270,5 +271,10 @@ export default {
   general: {
     statusInvalid: 'The status is invalid!',
     fieldEmpty: 'The field can not be empty!'
-  }
+  },
+    universityCampus: {
+        addCampus: 'Novo Polo',
+        fieldEmpty: 'The field can not be empty!',
+        edit: 'Editar Polo'
+    }
 }

@@ -65,3 +65,17 @@ export function getStudentUsers() {
     method: 'get'
   })
 }
+
+export function getAdminUsers() {
+    return request({
+        url: '/user',
+        method: 'get'
+    })
+}
+
+export function getRoleUsers() {
+    return request({
+        url: '/roles',
+        method: 'get'
+    })
+}

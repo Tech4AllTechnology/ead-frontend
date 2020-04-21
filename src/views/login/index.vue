@@ -89,8 +89,8 @@ export default {
         password: ''
       },
       loginRules: {
-          application: [{ required: true, trigger: 'blur', validator: validateApplication }],
-          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+          application: [{required: true, trigger: 'blur', validator: validateApplication}],
+          password: [{required: true, trigger: 'blur', validator: validatePassword}]
       },
       passwordType: 'password',
       loading: false,
@@ -133,6 +133,8 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
+          console.log(valid)
+          console.log(this.loginForm)
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)

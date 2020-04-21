@@ -12,17 +12,16 @@
           OOPS!
         </div>
         <div class="bullshit__info">
-          版权所有
-          <a class="link-type" href="https://wallstreetcn.com" target="_blank">华尔街见闻</a>
+            Página não encontrada
         </div>
         <div class="bullshit__headline">
           {{ message }}
         </div>
         <div class="bullshit__info">
-          请检查您输入的网址是否正确，请点击以下按钮返回主页或者发送错误报告
+            A página solicitada não foi encontrada.
         </div>
         <router-link to="/" class="bullshit__return-home">
-          返回首页
+            Home
         </router-link>
       </div>
     </div>
@@ -35,7 +34,7 @@ export default {
   name: 'Page404',
   computed: {
     message() {
-      return '网管说这个页面你不能进......'
+        return 'A página que você soliticou não foi encontrada.'
     }
   }
 }

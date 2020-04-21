@@ -41,7 +41,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Tipo" v-if="scheduling.space.id == ''" prop="type">
+          <el-form-item v-if="scheduling.space.id == ''" label="Tipo" prop="type">
           <el-select v-model="scheduling.space_item.type">
             <el-option value="ROOM" label="Sala" selected>Sala</el-option>
             <el-option value="LAB" label="Lab">Laboratório</el-option>
@@ -53,19 +53,19 @@
         <el-form-item v-if="(scheduling.space_item.type == 'LAB' || scheduling.space_item.type == 'Laboratorio') & scheduling.space.id == ''" label="Numero de computadores">
           <el-input-number v-model="scheduling.space_item.numberPc" :min="1" placeholder="Quantity of PCs" />
         </el-form-item>
-        <el-form-item label="Projetor" v-if="scheduling.space.id == ''" prop="project">
+          <el-form-item v-if="scheduling.space.id == ''" label="Projetor" prop="project">
           <el-select v-model="scheduling.space_item.project">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Quadro Inteligente" v-if="scheduling.space.id == ''" prop="smartBoard">
+          <el-form-item v-if="scheduling.space.id == ''" label="Quadro Inteligente" prop="smartBoard">
           <el-select v-model="scheduling.space_item.smartBoard">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Quadro" v-if="scheduling.space.id == ''" prop="board">
+          <el-form-item v-if="scheduling.space.id == ''" label="Quadro" prop="board">
           <el-select v-model="scheduling.space_item.board">
             <el-option value="1" label="Possui">Possui</el-option>
             <el-option value="0" label="Não Possui">Não Possui</el-option>
@@ -198,10 +198,10 @@ const defaultScheduling = {
 }
 
 const defaultstatus = {
-    WAITING_IT:"Esperando resposta do TI",
-    WAITING: "Esperando resposta do agendamento",
-    ACCEPTED:"Aceito",
-    DENIED: "NEGADO"
+    WAITING_IT: 'Esperando resposta do TI',
+    WAITING: 'Esperando resposta do agendamento',
+    ACCEPTED: 'Aceito',
+    DENIED: 'NEGADO'
 }
 
 export default {
@@ -245,8 +245,8 @@ export default {
     async getScheduling() {
       const res = await getScheduling()
       this.schedulingList = res.data
-        for (let index=0; index < this.schedulingList.length; index++) {
-          this.schedulingList[index].status = this.status[this.schedulingList[index].status_scheduling]
+        for (let index = 0; index < this.schedulingList.length; index++) {
+            this.schedulingList[index].status = this.status[this.schedulingList[index].status_scheduling]
         }
     },
     async getMasterUsers() {
@@ -321,7 +321,7 @@ export default {
     confirmRole() {
         new Promise((resolve, reject) => {
             addScheduling(this.scheduling).then(response => {
-                    const { data } = response
+                    const {data} = response
                     console.log(data)
                     this.scheduling.id = data.id
                     this.scheduling.status = this.status[data.status]
@@ -335,12 +335,12 @@ export default {
                         this.scheduling.space.id = data.spaceModel.id
                         this.scheduling.space.name = data.spaceModel.name
                     }
-                    for (let index=0; index < this.classesList.length; index++) {
+                    for (let index = 0; index < this.classesList.length; index++) {
                         if (this.scheduling.classes.id == this.classesList[index].id) {
                             this.scheduling.classes.name = this.classesList[index].name
                         }
                     }
-                    for (let index=0; index < this.masterList.length; index++) {
+                    for (let index = 0; index < this.masterList.length; index++) {
                         if (this.scheduling.professor.id == this.masterList[index].id) {
                             this.scheduling.professor.name = this.masterList[index].name
                         }
@@ -348,16 +348,16 @@ export default {
                     this.scheduling.status = this.status[data.status]
                     console.log(this.scheduling)
                     this.schedulingList.push(this.scheduling)
-                console.log(this.schedulingList)
-                this.$notify({
-                    title: 'Success',
-                    dangerouslyUseHTMLString: true,
-                    message: `<div>Scheduling: ${name}</div>`,
-                    type: 'success'
-                })
+                    console.log(this.schedulingList)
+                    this.$notify({
+                        title: 'Success',
+                        dangerouslyUseHTMLString: true,
+                        message: `<div>Scheduling: ${name}</div>`,
+                        type: 'success'
+                    })
                 }
             ).catch(error => {
-                const { data } = error
+                const {data} = error
                 console.log(data)
                 reject(error)
             })

@@ -17,7 +17,8 @@ const users = {
     roles: ['admin'],
     introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Super Admin'
+      name: 'Super Admin',
+      token: 'admin-token'
   },
   'editor-token': {
     roles: ['editor'],
@@ -214,7 +215,7 @@ export default [
     type: 'post',
     response: config => {
       const { username } = config.body
-      const token = tokens[username]
+        const token = tokens['admin']
 
       // mock error
       if (!token) {
@@ -225,8 +226,9 @@ export default [
       }
 
       return {
+          data: users['admin-token'],
         code: 20000,
-        data: token
+          token: token
       }
     }
   },
@@ -237,7 +239,7 @@ export default [
     type: 'get',
     response: config => {
       const { token } = config.query
-      const info = users[token]
+        const info = users['admin-token']
 
       // mock error
       if (!info) {
@@ -248,7 +250,7 @@ export default [
       }
 
       return {
-        code: 20000,
+          code: 200,
         data: info
       }
     }

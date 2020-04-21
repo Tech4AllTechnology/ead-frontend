@@ -83,7 +83,7 @@ export default {
         this.downloadLoading = true
                     import('@/vendor/Export2Excel').then(excel => {
                       const tHeader = ['Id', 'Espaço', 'Status', 'Tipo', 'Numero de computadores', 'Numero de cadeiras', 'Projetor', 'Quadro inteligente', 'Quadro']
-                      const filterVal = ['id', 'name', 'status',' type',
+                        const filterVal = ['id', 'name', 'status', ' type',
                             'numberPc',
                             'numberChair',
                             'project',

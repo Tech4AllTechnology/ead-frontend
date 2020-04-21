@@ -47,12 +47,12 @@
         </el-form-item>
         <!--<el-form-item ref="program.id" label="Curso" prop="program.id">-->
           <!--<el-select v-model="course.program.id" required>-->
-            <!--<el-option-->
-              <!--v-for="item in programList"-->
-              <!--:key="item.id"-->
-              <!--:label="item.name"-->
-              <!--:value="item.id"-->
-            <!--/>-->
+          <!--<el-option-->
+          <!--v-for="item in programList"-->
+          <!--:key="item.id"-->
+          <!--:label="item.name"-->
+          <!--:value="item.id"-->
+          <!--/>-->
           <!--</el-select>-->
         <!--</el-form-item>-->
         <el-form-item label="Status" prop="status">
@@ -77,20 +77,23 @@
           </el-select>
         </el-form-item>
 
-      <el-form-item label="Cursos" prop="program">
-        <div v-for="(line, index) in course.programsItens" :key="index" class="row" style="margin-top: 10px">
-                <div class="row">
-                        <el-select v-model="line.program_id" label="Courses">
-                        <el-option v-for="item in programList" :key="item.id"
-                        :label="item.name" :value="item.id">
-                        </el-option>
-                        </el-select>
-                    <el-button type="danger" round @click="removeLine(index)" icon="el-icon-delete" />
-                    <el-button type="primary" round v-if="index + 1 === course.programsItens.length" @click="addLine" icon="el-icon-plus" />
-                </div>
+          <el-form-item label="Cursos" prop="program">
+              <div v-for="(line, index) in course.program_items" :key="index" class="row" style="margin-top: 10px">
+                  <div class="row">
+                      <el-select v-model="line.id" label="Courses">
+                          <el-option
+                                  v-for="item in programList"
+                                  :key="item.id"
+                                  :label="item.name"
+                                  :value="item.id"
+                          />
+                      </el-select>
+                      <el-button type="danger" round icon="el-icon-delete" @click="removeLine(index)"/>
+                      <el-button v-if="index + 1 === course.program_items.length" type="primary" round
+                                 icon="el-icon-plus" @click="addLine"/>
+                  </div>
               </div>
-      </el-form-item>
-
+          </el-form-item>
 
       </el-form>
       <div style="text-align:right;">
@@ -117,7 +120,7 @@ const defaultCourse = {
   credit: '',
   status: '',
   period: '',
-  programsItens: []
+    program_items: []
 }
 
 const defaultProgram = {
@@ -155,7 +158,7 @@ export default {
     }
     return {
       blockRemoval: true,
-      programsItens: [],
+        program_items: [],
       course: Object.assign({}, defaultCourse),
       program: Object.assign({}, defaultProgram),
       dialogVisible: false,
@@ -168,7 +171,8 @@ export default {
       courseRules: {
         status: [{ required: true, trigger: 'blur', validator: validateStatus }],
         credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-        period: [{ required: true, trigger: 'blur', validator: validateEmpty }]
+          period: [{required: true, trigger: 'blur', validator: validateEmpty}],
+          program_items: [{required: true, trigger: 'blur', validator: validateEmpty}]
       }
     }
   },
@@ -177,16 +181,16 @@ export default {
       return this.routes
     }
   },
+    watch: {
+        program_items() {
+            console.log('watch function')
+            this.blockRemoval = this.course.program_items.length <= 1
+        }
+    },
   created() {
     // Mock: get all routes and roles list from server
     this.getProgram()
     this.getCourse()
-  },
-  watch: {
-      programsItens () {
-          console.log('watch function')
-          this.blockRemoval = this.course.programsItens.length <= 1
-      }
   },
   methods: {
     closeDialog() {
@@ -202,20 +206,20 @@ export default {
       this.programList = res.data
     },
     handleaddCourse() {
+        this.dialogType = 'new'
       this.course = Object.assign({}, defaultCourse)
       this.addLine()
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
-      this.dialogType = 'new'
       this.dialogVisible = true
     },
     handleEdit(scope) {
       this.dialogType = 'edit'
+        this.course = deepClone(scope.row)
+        this.addLine()
       this.dialogVisible = true
       this.checkStrictly = true
-      this.course = deepClone(scope.row)
-      this.addLine()
     },
     handleDelete({ $index, row }) {
       this.$confirm('Deseja remover a matéria?', 'Warning', {
@@ -260,6 +264,7 @@ export default {
               addCourse(this.changeSendType(this.course)).then(response => {
                 const { data } = response
                 this.course.id = data.key
+                  this.course.code = data.code
                 this.courseList.push(this.changeType(this.course))
                 resolve()
               }).catch(error => {
@@ -319,25 +324,23 @@ export default {
       return false
     },
 
-
-
-      addLine () {
-        console.log(this.course.programsItens)
-          let checkEmptyLines = this.course.programsItens.filter(line => line.program_id === null)
-          if (checkEmptyLines.length >= 1 && this.course.programsItens.length > 0) {
+      addLine() {
+          console.log(this.course.program_items)
+          const checkEmptyLines = this.course.program_items.filter(line => line.id === null)
+          if (checkEmptyLines.length >= 1 && this.course.program_items.length > 0) {
               return
           }
-          this.course.programsItens.push({
-              program_id: null,
+          this.course.program_items.push({
+              id: null,
               name: null
           })
       },
-      removeLine (lineId) {
-        console.log(this.course.programsItens)
+      removeLine(lineId) {
+          console.log(this.course.program_items)
           console.log(lineId)
-          if (this.course.programsItens.length > 1) {
+          if (this.course.program_items.length > 1) {
               console.log('Entrou no item')
-              this.course.programsItens.splice(lineId, 1)
+              this.course.program_items.splice(lineId, 1)
           }
       }
   }

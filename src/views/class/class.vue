@@ -10,13 +10,19 @@
                 <el-popover trigger="hover" placement="top">
                     <p>Turma: {{ scope.row.name }}</p>
                     <p>Ano: {{ scope.row.year }}</p>
-                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno: Manhã</p>
-                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno: Tarde</p>
-                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno: Noite</p>
+                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno:
+                        Manhã</p>
+                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno:
+                        Tarde</p>
+                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno:
+                        Noite</p>
 
-                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">Semestre: Primeiro</p>
-                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">Semestre: Segundo</p>
-                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">Semestre: Anual</p>
+                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">
+                        Semestre: Primeiro</p>
+                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">
+                        Semestre: Segundo</p>
+                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">
+                        Semestre: Anual</p>
 
                     <div slot="reference" class="name-wrapper">
                         {{ scope.row.name }}
@@ -30,13 +36,19 @@
                 <el-popover trigger="hover" placement="top">
                     <p>Turma: {{ scope.row.name }}</p>
                     <p>Ano: {{ scope.row.year }}</p>
-                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno: Manhã</p>
-                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno: Tarde</p>
-                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno: Noite</p>
+                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno:
+                        Manhã</p>
+                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno:
+                        Tarde</p>
+                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno:
+                        Noite</p>
 
-                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">Semestre: Primeiro</p>
-                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">Semestre: Segundo</p>
-                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">Semestre: Anual</p>
+                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">
+                        Semestre: Primeiro</p>
+                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">
+                        Semestre: Segundo</p>
+                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">
+                        Semestre: Anual</p>
 
                     <div slot="reference" class="name-wrapper">
                         {{ scope.row.status }}
@@ -50,13 +62,19 @@
                 <el-popover trigger="hover" placement="top">
                     <p>Turma: {{ scope.row.name }}</p>
                     <p>Ano: {{ scope.row.year }}</p>
-                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno: Manhã</p>
-                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno: Tarde</p>
-                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno: Noite</p>
+                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno:
+                        Manhã</p>
+                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno:
+                        Tarde</p>
+                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno:
+                        Noite</p>
 
-                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">Semestre: Primeiro</p>
-                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">Semestre: Segundo</p>
-                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">Semestre: Anual</p>
+                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">
+                        Semestre: Primeiro</p>
+                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">
+                        Semestre: Segundo</p>
+                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">
+                        Semestre: Anual</p>
 
                     <div slot="reference" class="name-wrapper">
                         {{ scope.row.course.name }}
@@ -70,13 +88,19 @@
                 <el-popover trigger="hover" placement="top">
                     <p>Turma: {{ scope.row.name }}</p>
                     <p>Ano: {{ scope.row.year }}</p>
-                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno: Manhã</p>
-                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno: Tarde</p>
-                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno: Noite</p>
+                    <p v-if="scope.row.shift == 1 || scope.row.shift == '1' || scope.row.shift == 'Manhã'">Turno:
+                        Manhã</p>
+                    <p v-if="scope.row.shift == 2 || scope.row.shift == '2' || scope.row.shift == 'Tarde'">Turno:
+                        Tarde</p>
+                    <p v-if="scope.row.shift == 3 || scope.row.shift == '3' || scope.row.shift == 'Noite'">Turno:
+                        Noite</p>
 
-                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">Semestre: Primeiro</p>
-                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">Semestre: Segundo</p>
-                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">Semestre: Anual</p>
+                    <p v-if="scope.row.semester == 1 || scope.row.semester == '1' || scope.row.semester == 'Primeiro'">
+                        Semestre: Primeiro</p>
+                    <p v-if="scope.row.semester == 2 || scope.row.semester == '2' || scope.row.semester == 'Segundo'">
+                        Semestre: Segundo</p>
+                    <p v-if="scope.row.semester == 3 || scope.row.semester == '3' || scope.row.semester == 'Anual'">
+                        Semestre: Anual</p>
 
                     <div slot="reference" class="name-wrapper">
                         {{ scope.row.master.name }}
@@ -99,9 +123,12 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Turma':'Nova Turma'">
       <el-form ref="classes" :model="classes" :rules="classesRules" label-width="120px" label-position="left">
-        <el-form-item label="Nome" prop="name">
-          <el-input v-model="classes.name" placeholder="Nome" />
+          <el-form-item label="Nome" prop="name" v-if="dialogType==='edit'">
+              <el-input v-model="classes.name" placeholder="Nome" disabled/>
         </el-form-item>
+          <el-form-item label="Nome" prop="name" v-if="dialogType==='new'">
+              <el-input v-model="classes.name" placeholder="Nome será criado pelo Sistema" disabled/>
+          </el-form-item>
         <el-form-item label="Status" prop="status">
           <el-select v-model="classes.status">
             <el-option value="1" label="Ativo">Ativo</el-option>
@@ -147,8 +174,8 @@
           <el-date-picker
                   v-model="classes.year"
                   type="year"
-                  placeholder="Pick a year">
-          </el-date-picker>
+                  placeholder="Selecione o Ano"
+          />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -305,7 +332,7 @@ export default {
           if (!value) {
               callback(new Error('O campo não pode ser vazio.'))
           } else {
-                  callback()
+              callback()
           }
       }
     return {
@@ -327,14 +354,14 @@ export default {
       studentsList: [],
       studentsClassList: [],
       classesRules: {
-          status: [{ required: true, trigger: 'blur', validator: validateStatus }],
-          name: [{ required: true, trigger: 'blur', validator: validateName }],
-          shift: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-          credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-          semester: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-          year: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-          'master.id': [{ required: true, trigger: 'blur', validator: validateEmpty }],
-          'course.id': [{ required: true, trigger: 'blur', validator: validateEmpty }]
+          status: [{required: true, trigger: 'blur', validator: validateStatus}],
+          name: [{required: true, trigger: 'blur', validator: validateName}],
+          shift: [{required: true, trigger: 'blur', validator: validateEmpty}],
+          credit: [{required: true, trigger: 'blur', validator: validateEmpty}],
+          semester: [{required: true, trigger: 'blur', validator: validateEmpty}],
+          year: [{required: true, trigger: 'blur', validator: validateEmpty}],
+          'master.id': [{required: true, trigger: 'blur', validator: validateEmpty}],
+          'course.id': [{required: true, trigger: 'blur', validator: validateEmpty}]
       }
     }
   },
@@ -364,10 +391,6 @@ export default {
     },
     async handleaddClass() {
       this.classes = Object.assign({}, defaultClass)
-      const courses = await getCourse()
-      this.courseList = courses.data
-      const master = await getMasterUsers()
-      this.masterList = master.data
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }

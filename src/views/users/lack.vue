@@ -17,10 +17,12 @@
             </el-table-column>
             <el-table-column :data="softwareList" align="center" label="Operações" fixed>
                 <template slot-scope="scope">
-                    <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small" @click="enableDisable(scope, 0)">
+                    <el-button v-if="scope.row.status == 'ativo'" type="primary" size="small"
+                               @click="enableDisable(scope, 0)">
                         {{ $t('software.disable') }}
                     </el-button>
-                    <el-button v-if="scope.row.status == 'inativo'" type="primary" size="small" @click="enableDisable(scope, 1)">
+                    <el-button v-if="scope.row.status == 'inativo'" type="primary" size="small"
+                               @click="enableDisable(scope, 1)">
                         {{ $t('software.enable') }}
                     </el-button>
                     <el-button type="primary" size="small" @click="handleEdit(scope)">
@@ -48,11 +50,11 @@
                 </el-form-item>
                 <el-form-item label="Data da Falta">
                     <el-date-picker
-                            align="center"
                             v-model="lack.date"
+                            align="center"
                             type="date"
-                            placeholder="Select date and time">
-                    </el-date-picker>
+                            placeholder="Select date and time"
+                    />
                 </el-form-item>
             </el-form>
             <div style="text-align:right;">
@@ -68,11 +70,11 @@
 </template>
 
 <script>
-    import { deepClone } from '@/utils'
-    import { getSoftware, addSoftware, deleteSoftware, updateSoftware } from '@/api/software'
-    import { getToken } from '@/utils/auth' // get token from cookie
-    import { getMasterUsers } from '@/api/user'
-    import { addLack } from "@/api/classes"
+    import {deepClone} from '@/utils'
+    import {getSoftware, addSoftware, deleteSoftware, updateSoftware} from '@/api/software'
+    import {getToken} from '@/utils/auth' // get token from cookie
+    import {getMasterUsers} from '@/api/user'
+    import {addLack} from '@/api/classes'
 
     const defaultSoftware = {
         id: '',
@@ -131,9 +133,9 @@
                 id: '',
                 statusList: Object.assign({}, status),
                 sendStatusList: Object.assign({}, sendStatus),
-                softwareRules: {
-                    status: [{ required: true, trigger: 'blur', validator: validateStatus }],
-                    name: [{ required: true, trigger: 'blur', validator: validateEmpty }]
+                campusRules: {
+                    status: [{required: true, trigger: 'blur', validator: validateStatus}],
+                    name: [{required: true, trigger: 'blur', validator: validateEmpty}]
                 },
                 lack: Object.assign({}, defaultLack)
             }
@@ -160,14 +162,14 @@
                 const res = await getSoftware()
                 this.softwareList = this.changeType(res.data)
             },
-            handleaddSoftware() {
+            handleaddCampus() {
                 this.lack = Object.assign({}, defaultLack)
                 if (this.$refs.tree) {
                     this.$refs.tree.setCheckedNodes([])
                 }
                 if (this.token == 'PROFESSOR') {
                     this.lack.professor.id = this.id
-                    for (let index =0; index< this.masterList.length; index++) {
+                    for (let index = 0; index < this.masterList.length; index++) {
                         if (this.lack.professor.id == this.masterList[index].id) {
                             this.lack.professor.name = this.masterList[index].name
                         }
@@ -188,13 +190,13 @@
                 this.software.status = status
                 this.confirmRole()
             },
-            handleDelete({ $index, row }) {
+            handleDelete({$index, row}) {
                 this.$confirm('Deseja remover o software?', 'Warning', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                 })
-                    .then(async() => {
+                    .then(async () => {
                         await deleteSoftware(row.id)
                         this.softwareList.splice($index, 1)
                         this.$message({
@@ -209,14 +211,14 @@
             confirmRole() {
                 this.$refs.software.validate(valid => {
                     if (valid) {
-                            new Promise((resolve, reject) => {
-                                addLack(this.lack).then(response => {
-                                    const { data } = response
-                                    resolve()
-                                }).catch(error => {
-                                    reject(error)
-                                })
+                        new Promise((resolve, reject) => {
+                            addLack(this.lack).then(response => {
+                                const {data} = response
+                                resolve()
+                            }).catch(error => {
+                                reject(error)
                             })
+                        })
                         this.loading = false
                         this.dialogVisible = false
                         this.$notify({

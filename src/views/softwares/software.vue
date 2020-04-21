@@ -107,7 +107,7 @@ export default {
       softwareList: [],
       statusList: Object.assign({}, status),
       sendStatusList: Object.assign({}, sendStatus),
-      softwareRules: {
+        campusRules: {
         status: [{ required: true, trigger: 'blur', validator: validateStatus }],
         name: [{ required: true, trigger: 'blur', validator: validateEmpty }]
       }
@@ -131,7 +131,7 @@ export default {
       const res = await getSoftware()
       this.softwareList = this.changeType(res.data)
     },
-    handleaddSoftware() {
+      handleaddCampus() {
       this.software = Object.assign({}, defaultSoftware)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
