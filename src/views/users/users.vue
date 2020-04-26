@@ -1,77 +1,32 @@
 <template>
   <div class="app-container">
-    <el-button v-permission="['teste']" type="primary" @click="handleaddUser">
+      <el-button v-permission="['admin']" type="primary" @click="handleaddUser">
       {{ $t('users.addUser') }}
     </el-button>
 
     <el-table :data="usersList" style="width: 100%;margin-top:30px;" border>
       <el-table-column label="Nome" align="center" fixed>
         <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top">
-            <p>Nome: {{ scope.row.name }}</p>
-            <p>Matricula: {{ scope.row.application }}</p>
-            <p>Telefone: {{ scope.row.telephone }}</p>
-            <p>Cidade: {{ scope.row.city }}</p>
-            <p>Bairro: {{ scope.row.neighborhood }}</p>
-            <p>Rua: {{ scope.row.street }}</p>
-            <p>Numero: {{ scope.row.number }}</p>
-            <div slot="reference" class="name-wrapper">
               {{ scope.row.name }}
-            </div>
-          </el-popover>
         </template>
       </el-table-column>
       <el-table-column label="E-mail" align="center" fixed>
         <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top">
-            <p>Nome: {{ scope.row.name }}</p>
-            <p>Matricula: {{ scope.row.application }}</p>
-            <p>Telefone: {{ scope.row.telephone }}</p>
-            <p>Cidade: {{ scope.row.city }}</p>
-            <p>Bairro: {{ scope.row.neighborhood }}</p>
-            <p>Rua: {{ scope.row.street }}</p>
-            <p>Numero: {{ scope.row.number }}</p>
-            <div slot="reference" class="name-wrapper">
               {{ scope.row.email }}
-            </div>
-          </el-popover>
         </template>
       </el-table-column>
       <el-table-column label="Status" align="center" fixed>
         <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top">
-            <p>Nome: {{ scope.row.name }}</p>
-            <p>Matricula: {{ scope.row.application }}</p>
-            <p>Telefone: {{ scope.row.telephone }}</p>
-            <p>Cidade: {{ scope.row.city }}</p>
-            <p>Bairro: {{ scope.row.neighborhood }}</p>
-            <p>Rua: {{ scope.row.street }}</p>
-            <p>Numero: {{ scope.row.number }}</p>
-            <div slot="reference" class="name-wrapper">
               {{ scope.row.status }}
-            </div>
-          </el-popover>
         </template>
       </el-table-column>
       <el-table-column label="Tipo" align="center" fixed>
-        <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top">
-            <p>Nome: {{ scope.row.name }}</p>
-            <p>Matricula: {{ scope.row.application }}</p>
-            <p>Telefone: {{ scope.row.telephone }}</p>
-            <p>Cidade: {{ scope.row.city }}</p>
-            <p>Bairro: {{ scope.row.neighborhood }}</p>
-            <p>Rua: {{ scope.row.street }}</p>
-            <p>Numero: {{ scope.row.number }}</p>
-            <div slot="reference" class="name-wrapper">
-              {{ scope.row.type }}
-            </div>
-          </el-popover>
-        </template>
+          <template slot-scope="scope">
+              {{ scope.row.user_type }}
+          </template>
       </el-table-column>
       <el-table-column align="center" label="Operações" fixed>
         <template slot-scope="scope">
-          <!--v-permission="['ASSISTENT']" v-if="checkPermission(['ADMINISTRATOR'])-->
           <el-button
             v-if="scope.row.status == 'ativo'"
             type="primary"
@@ -99,183 +54,352 @@
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Editar Usuário':'Novo Usuário'">
-      <el-form ref="user" status-icon :model="user" :rules="userRules" label-width="80px" label-position="left">
-        <el-form-item label="Nome" prop="name">
-          <el-input ref="name" v-model="user.name" placeholder="Nome" />
-        </el-form-item>
-        <el-form-item label="Email" prop="email">
-          <el-input ref="email" v-model="user.email" placeholder="User Email" required type="e-mail" />
-        </el-form-item>
-        <el-form-item label="Status" prop="status">
-          <el-select ref="status" v-model="user.status" required>
-            <el-option value="1" label="Ativo" selected>Ativo</el-option>
-            <el-option value="0" label="Inativo">Inativo</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Tipo" prop="type">
-          <el-select v-model="user.user_type" required>
-            <el-option
-                    v-for="item in rolesList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Matricula" prop="application" v-if="dialogType === 'edit'">
-          <el-input disabled v-model.number="user.application" placeholder="Matricula" required/>
-        </el-form-item>
+        <el-form ref="user" status-icon :model="user" :rules="userRules">
 
-        <el-form-item label="Estado Civil" prop="marital_status">
-          <el-select ref="marital_status" v-model="user.marital_status" required>
-            <el-option value="SOLTEIRO" label="Solteiro(a)" selected>Solteiro(a)</el-option>
-            <el-option value="CASADO" label="Casado(a)">Casado(a)</el-option>
-            <el-option value="VIUVO" label="Viuvo(a)">Viuvo(a)</el-option>
-            <el-option value="DIVORCIADO" label="Divorciado(a)">Divorciado(a)</el-option>
-          </el-select>
-        </el-form-item>
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="name" style="width: 50%">
+                        <label style="display: block">Nome</label>
+                        <el-input ref="name" v-model="user.name" required placeholder="Nome" style="width: 160%"/>
+                    </el-form-item>
 
-        <el-form-item label="Nivel de escolaridade" prop="scholarship_level">
-          <el-select ref="scholarship_level" v-model="user.scholarship_level" required>
-            <el-option value="FUNDAMENTAL_NAO_COMPLETO" label="Fundamental Não Completo" selected>Fundamental Não
-              Completo
-            </el-option>
-            <el-option value="FUNDAMENTAL_COMPLETO" label="Fundamental Completo">Fundamental Completo</el-option>
-            <el-option value="MEDIO_NAO_COMPLETO" label="Médio Não Completo">Médio Não Completo</el-option>
-            <el-option value="MEDIO_COMPLETO" label="Médio Completo">Médio Completo</el-option>
-            <el-option value="TECNICO_NAO_COMPLETO" label="Técnico Não Completo">Técnico Não Completo</el-option>
-            <el-option value="TECNICO_COMPLETO" label="Técnico Completo">Técnico Completo</el-option>
-            <el-option value="SUPERIOR_NAO_COMPLETO" label="Superior Não Completo">Superior Não Completo</el-option>
-            <el-option value="SUPERIOR_COMPLETO" label="Superior Completo">Superior Completo</el-option>
-          </el-select>
-        </el-form-item>
+                    <el-form-item prop="application">
+                        <label style="display: block">Matricula</label>
+                        <el-input disabled v-model.number="user.application" placeholder="Matricula" required
+                                  style="width: 160%"/>
+                    </el-form-item>
+                </div>
+            </div>
 
-        <el-form-item label="Data de Conclusão" prop="scholarship_conclusion_date">
-          <el-date-picker
-                  v-model="user.scholarship_conclusion_date"
-                  type="date"
-                  placeholder="Selecione a data de Conclusão da escolaridade"
-                  value-format="yyyy-MM-dd"
-                  format="dd/MM/yyyy"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="Última instituição" prop="latest_school">
-          <el-input v-model="user.latest_school" placeholder="Última instituição" required/>
-        </el-form-item>
-
-        <el-form-item label="Titulo de Eleitor" prop="voter_id_number">
-          <el-input v-model="user.voter_id_number" placeholder="Titulo de Eleitor" required/>
-        </el-form-item>
-        <el-form-item label="Zona de Eleitorado" prop="voter_id_zone">
-          <el-input v-model="user.voter_id_zone" placeholder="Zona de Eleitorado" required/>
-        </el-form-item>
-        <el-form-item label="Seção de Eleitorado" prop="voter_id_section">
-          <el-input v-model="user.voter_id_section" placeholder="Seção de Eleitorado" required/>
-        </el-form-item>
-
-        <el-form-item label="Estado" prop="state">
-          <el-select v-model="user.state" required>
-            <el-option
-              v-for="item in stateList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Cidade" prop="city">
-          <el-input v-model="user.city" placeholder="City" required />
-        </el-form-item>
-        <el-form-item label="Bairro" prop="neighborhood">
-          <el-input v-model="user.neighborhood" placeholder="Neighborhood" required />
-        </el-form-item>
-        <el-form-item label="Rua" prop="street">
-          <el-input v-model="user.street" placeholder="Street" required />
-        </el-form-item>
-        <el-form-item label="Número" prop="number">
-          <el-input-number v-model="user.number" :min="0" placeholder="Number" required />
-        </el-form-item>
-        <el-form-item label="Data de Nascimento" prop="birthday">
-          <el-date-picker
-                  v-model="user.birthday"
-                  type="date"
-                  placeholder="Selecione a data de Nascimento"
-                  value-format="yyyy-MM-dd"
-                  format="dd/MM/yyyy"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="Nome da Mãe" prop="mother_name">
-          <el-input v-model="user.mother_name" placeholder="Nome da Mãe" required/>
-        </el-form-item>
-        <el-form-item label="Nome da Pai" prop="father_name">
-          <el-input v-model="user.father_name" placeholder="Nome da Pai" required/>
-        </el-form-item>
-        <el-form-item label="Profissão" prop="profession">
-          <el-input v-model="user.profession" placeholder="Profissão" required/>
-        </el-form-item>
-
-        <el-form-item label="Numero da Identidade" prop="identity_number">
-          <el-input v-model="user.identity_number" placeholder="Numero da Identidade" required/>
-        </el-form-item>
-        <el-form-item label="Emissor" prop="issuing_authority">
-          <el-input v-model="user.issuing_authority" placeholder="Emissor" required/>
-        </el-form-item>
-        <el-form-item label="Data de Emissão" prop="issuing_date">
-          <el-date-picker
-                  v-model="user.issuing_date"
-                  type="date"
-                  placeholder="Selecione a data de Emissão"
-                  value-format="yyyy-MM-dd"
-                  format="dd/MM/yyyy"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="Estado da Identidade" prop="issuing_id_state">
-          <el-select v-model="user.issuing_id_state" required>
-            <el-option
-                    v-for="item in stateList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="email" style="width: 50%">
+                        <label style="display: block">E-mail</label>
+                        <el-input ref="email" v-model="user.email" placeholder="User Email" required type="e-mail"
+                                  style="width: 160%"/>
+                    </el-form-item>
 
 
-        <el-form-item label="CPF" prop="cpf">
-          <el-input v-model="user.cpf" placeholder="CPF" required/>
-        </el-form-item>
-        <el-form-item label="Nacionalidade" prop="nacionalidade">
-          <el-select v-model="user.naturalness_country" required>
-            <el-option
-                    v-for="item in countriesList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Estado de Nascimento" prop="naturalness_state">
-          <el-select v-model="user.naturalness_state" required>
-            <el-option
-                    v-for="item in stateList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-            />
-          </el-select>
+                    <el-form-item prop="birthday">
+                        <label style="display: block">Data de Nascimento</label>
+
+                        <el-date-picker style="width: 140%"
+                                        v-model="user.birthday"
+                                        type="date"
+                                        placeholder="Selecione a data de Nascimento"
+                                        value-format="yyyy-MM-dd"
+                                        format="dd/MM/yyyy"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+
+                </div>
+            </div>
+
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="status" style="width: 50%">
+                        <label style="display: block; text-align: center"> Status</label>
+                        <el-select ref="status" v-model="user.status" required filterable style="width: 150%">
+                            <el-option value="1" label="Ativo" selected>Ativo</el-option>
+                            <el-option value="0" label="Inativo">Inativo</el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item prop="type">
+                        <label style="display: block; text-align: center">Tipo</label>
+                        <el-select v-model="user.type" filterable required style="width: 150%">
+                            <el-option
+                                    v-for="item in rolesList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="marital_status" style="width: 50%">
+                        <label style="display: block; text-align: center">Estado Civil</label>
+                        <el-select ref="marital_status" filterable v-model="user.marital_status" required
+                                   style="width: 150%">
+                            <el-option value="SOLTEIRO" label="Solteiro(a)" selected>Solteiro(a)</el-option>
+                            <el-option value="CASADO" label="Casado(a)">Casado(a)</el-option>
+                            <el-option value="VIUVO" label="Viuvo(a)">Viuvo(a)</el-option>
+                            <el-option value="DIVORCIADO" label="Divorciado(a)">Divorciado(a)</el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item prop="scholarship_level">
+                        <label style="display: block; text-align: center">Nivel de escolaridade</label>
+
+                        <el-select ref="scholarship_level" v-model="user.scholarship_level" filterable required
+                                   style="width: 150%">
+                            <el-option value="FUNDAMENTAL_NAO_COMPLETO" label="Fundamental Não Completo" selected>
+                                Fundamental Não
+                                Completo
+                            </el-option>
+                            <el-option value="FUNDAMENTAL_COMPLETO" label="Fundamental Completo">Fundamental Completo
+                            </el-option>
+                            <el-option value="MEDIO_NAO_COMPLETO" label="Médio Não Completo">Médio Não Completo
+                            </el-option>
+                            <el-option value="MEDIO_COMPLETO" label="Médio Completo">Médio Completo</el-option>
+                            <el-option value="TECNICO_NAO_COMPLETO" label="Técnico Não Completo">Técnico Não Completo
+                            </el-option>
+                            <el-option value="TECNICO_COMPLETO" label="Técnico Completo">Técnico Completo</el-option>
+                            <el-option value="SUPERIOR_NAO_COMPLETO" label="Superior Não Completo">Superior Não
+                                Completo
+                            </el-option>
+                            <el-option value="SUPERIOR_COMPLETO" label="Superior Completo">Superior Completo</el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="scholarship_conclusion_date" style="width: 50%">
+                        <label style="display: block; text-align: center">Data de Conclusão</label>
+                        <el-date-picker style="width: 140%"
+                                        v-model="user.scholarship_conclusion_date"
+                                        type="date"
+                                        placeholder="Selecione a data de Conclusão da escolaridade"
+                                        value-format="yyyy-MM-dd"
+                                        format="dd/MM/yyyy"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+
+
+                    <el-form-item prop="latest_school">
+                        <label style="display: block; text-align: center">Última instituição</label>
+                        <el-input v-model="user.latest_school" placeholder="Última instituição" required
+                                  style="width: 160%"/>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="identity_number" style="width: 50%">
+                        <label style="display: block; text-align: center">Numero da Identidade</label>
+
+                        <el-input v-model="user.identity_number" placeholder="Numero da Identidade" required
+                                  style="width: 160%"/>
+                    </el-form-item>
+
+                    <el-form-item prop="issuing_authority">
+                        <label style="display: block; text-align: center">Emissor da Identidade</label>
+                        <el-input v-model="user.issuing_authority" placeholder="Emissor" required style="width: 160%"/>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="issuing_date" style="width: 50%">
+                        <label style="display: block; text-align: center">Data de Emissão</label>
+                        <el-date-picker style="width: 140%"
+                                        v-model="user.issuing_date"
+                                        type="date"
+                                        placeholder="Selecione a data de Emissão"
+                                        value-format="yyyy-MM-dd"
+                                        format="dd/MM/yyyy"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+
+                    <el-form-item prop="issuing_id_state">
+                        <label style="display: block; text-align: center">Estado da Identidade</label>
+                        <el-select v-model="user.issuing_id_state" filterable required style="width: 150%">
+                            <el-option
+                                    v-for="item in stateList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+
+                    <el-form-item prop="cpf" style="width: 50%">
+                        <label style="display: block; text-align: center">CPF</label>
+                        <el-input v-model="user.cpf" placeholder="CPF" required style="width: 160%"/>
+                    </el-form-item>
+
+                    <el-form-item prop="nacionalidade">
+                        <label style="display: block; text-align: center">Nacionalidade</label>
+                        <el-select v-model="user.naturalness_country" filterable required style="width: 150%">
+                            <el-option
+                                    v-for="item in countriesList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+
+                    <el-form-item prop="profession" style="width: 50%">
+                        <label style="display: block; text-align: center">Profissão</label>
+                        <el-input v-model="user.profession" placeholder="Profissão" required style="width: 160%"/>
+                    </el-form-item>
+
+                    <el-form-item prop="naturalness_state">
+                        <label style="display: block; text-align: center">Estado de Nascimento</label>
+                        <el-select v-model="user.naturalness_state" filterable required style="width: 160%">
+                            <el-option
+                                    v-for="item in stateList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="voter_id_number" style="width: 50%">
+                        <label style="display: block; text-align: center">Titulo de Eleitor</label>
+                        <el-input v-model="user.voter_id_number" placeholder="Titulo de Eleitor" required
+                                  style="width: 160%"/>
+                    </el-form-item>
+
+                    <el-form-item prop="voter_id_zone">
+                        <label style="display: block; text-align: center">Zona de Eleitorado</label>
+                        <el-input v-model="user.voter_id_zone" placeholder="Zona de Eleitorado" required
+                                  style="width: 160%"/>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+
+                    <el-form-item prop="voter_id_section" style="width: 50%">
+                        <label style="display: block; text-align: center">Seção de Eleitorado</label>
+                        <el-input v-model="user.voter_id_section" placeholder="Seção de Eleitorado" required
+                                  style="width: 160%"/>
+                    </el-form-item>
+
+
+                    <el-form-item prop="voter_id_state">
+                        <label style="display: block; text-align: center"> Estado do Titulo de Eleitor</label>
+                        <el-select v-model="user.voter_id_state" filterable required style="width: 150%">
+                            <el-option
+                                    v-for="item in stateList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+
+                    <el-form-item prop="cep" style="width: 50%">
+                        <label style="display: block; text-align: center">CEP</label>
+                        <el-input v-model="user.cep" placeholder="CEP" required style="width: 160%"/>
+                    </el-form-item>
+
+
+                    <el-form-item prop="state">
+                        <label style="display: block; text-align: center">Estado</label>
+
+                        <el-select v-model="user.state_id" filterable required style="width: 150%">
+                            <el-option
+                                    v-for="item in stateList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+
+                    <el-form-item prop="city" style="width: 50%">
+                        <label style="display: block; text-align: center">Cidade</label>
+                        <el-input v-model="user.city" placeholder="Cidade" required style="width: 160%"/>
+                    </el-form-item>
+
+
+                    <el-form-item prop="neighborhood">
+                        <label style="display: block; text-align: center">Bairro</label>
+                        <el-input v-model="user.neighborhood" placeholder="Neighborhood" required style="width: 160%"/>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="street" style="width: 50%">
+                        <label style="display: block; text-align: center">Rua</label>
+                        <el-input v-model="user.street" placeholder="Street" required style="width: 160%"/>
+                    </el-form-item>
+
+
+                    <el-form-item prop="number">
+                        <label style="display: block; text-align: center">Número</label>
+                        <el-input-number v-model="user.number" :min="0" placeholder="Number" required
+                                         style="width: 125%"/>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="form-group el-form--inline">
+                    <el-form-item prop="mother_name" style="width: 50%">
+                        <label style="display: block; text-align: center">Nome da Mãe</label>
+                        <el-input v-model="user.mother_name" placeholder="Nome da Mãe" required style="width: 160%"/>
+                    </el-form-item>
+
+
+                    <el-form-item prop="father_name">
+                        <label style="display: block; text-align: center">Nome da Pai</label>
+                        <el-input v-model="user.father_name" placeholder="Nome da Pai" required style="width: 160%"/>
+                    </el-form-item>
+                </div>
+            </div>
+
+            <el-form-item prop="telephones">
+                <label style="display: block">Telefones</label>
+                <div v-for="(line, index) in user.telephones" :key="index" class="row" style="margin-top: 10px">
+                    <div class="row">
+                        <el-input v-model="line.telephone_number" placeholder="Telefones" style="width: 72%;"/>
+                        <el-button type="danger" round icon="el-icon-delete" @click="removeLine(index)"/>
+                        <el-button v-if="index + 1 === user.telephones.length" type="primary" round icon="el-icon-plus"
+                                   @click="addLine"/>
+                    </div>
+                </div>
         </el-form-item>
 
         <el-form-item label="Facebook" prop="facebook_link">
-          <el-input v-model="user.facebook_link" placeholder="Titulo de Eleitor" required/>
+            <el-input v-model="user.facebook_link" placeholder="Perfil Facebook"/>
         </el-form-item>
         <el-form-item label="Instagram" prop="instagram_link">
-          <el-input v-model="user.instagram_link" placeholder="Zona de Eleitorado" required/>
+            <el-input v-model="user.instagram_link" placeholder="Perfil Instagram"/>
         </el-form-item>
         <el-form-item label="Whatsapp" prop="whatsapp_number">
-          <el-input v-model="user.whatsapp_number" placeholder="Seção de Eleitorado" required/>
+            <el-input v-model="user.whatsapp_number" placeholder="Numero Whatsapp"/>
         </el-form-item>
 
       </el-form>
@@ -298,7 +422,7 @@ import { getStates } from '@/api/state'
 import { validUsername } from '@/utils/validate'
 import {permission} from '@/directive/permission/index.js'
 import {checkPermission} from '@/utils/permission'
-import store from '@/store'
+import {store} from '@/store'
 import {getCountries} from '@/api/country'
 
 const defaultUser = {
@@ -329,7 +453,10 @@ const defaultUser = {
     naturalness_country: '',
     naturalness_state: '',
     voter_id_state: '',
-    user_type: ''
+    type: '',
+    cep: '',
+    state_id: '',
+    telephones: []
 
 }
 
@@ -432,21 +559,7 @@ export default {
       statusList: Object.assign({}, status),
       sendTypesList: Object.assign({}, sendTypes),
       sendStatusList: Object.assign({}, sendStatus),
-      user: {
-        id: '',
-        type: '',
-        email: '',
-        status: '',
-        name: '',
-        city: '',
-        state: '',
-        number: '',
-        telephone: '',
-        password: '',
-        neighborhood: '',
-        street: '',
-        application: ''
-      },
+        user: Object.assign({}, defaultUser),
       userRules: {
         email: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
@@ -474,7 +587,6 @@ export default {
       this.getCountries()
   },
   methods: {
-    checkPermission,
     closeDialog() {
       this.$refs.user.resetFields()
       this.dialogVisible = false
@@ -500,14 +612,16 @@ export default {
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
+        this.addLine()
       this.dialogType = 'new'
       this.dialogVisible = true
     },
     handleEdit(scope) {
       this.dialogType = 'edit'
+        this.user = deepClone(scope.row)
+        this.addLine()
       this.dialogVisible = true
       this.checkStrictly = true
-      this.user = deepClone(scope.row)
     },
 
     handleTelephone(scope) {
@@ -554,6 +668,8 @@ export default {
                     this.usersList.splice(index, 1, Object.assign({}, this.changeType(this.user)))
                   }
                 }
+                  const {data} = response
+                  this.user.user_type = data.user_type
                 resolve()
               }).catch(error => {
                 reject(error)
@@ -564,6 +680,7 @@ export default {
               addUser(this.changeSendType(this.user)).then(response => {
                 const { data } = response
                 this.user.id = data.key
+                  this.user.user_type = data.user_type
                 this.usersList.push(this.changeType(this.user))
                 resolve()
               }).catch(error => {
@@ -623,8 +740,7 @@ export default {
     },
     checkIfEmailExists(email, user_id) {
       for (let index = 0; index < this.usersList.length; index++) {
-        // eslint-disable-next-line eqeqeq
-        if (this.usersList[index].email == email && this.usersList[index].id != user_id) {
+          if (this.usersList[index].email === email && this.usersList[index].id !== user_id) {
           return true
         }
       }
@@ -638,7 +754,22 @@ export default {
         }
       }
       return false
-    }
+    },
+      addLine() {
+          const checkEmptyLines = this.user.telephones.filter(line => line.telephone_number === null)
+          if (checkEmptyLines.length >= 1 && this.user.telephones.length > 0) {
+              return
+          }
+          this.user.telephones.push({
+              id: null,
+              telephone_number: null
+          })
+      },
+      removeLine(lineId) {
+          if (this.user.telephones.length > 1) {
+              this.user.telephones.splice(lineId, 1)
+          }
+      }
   }
 }
 </script>
