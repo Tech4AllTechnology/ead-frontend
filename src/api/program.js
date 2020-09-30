@@ -35,3 +35,10 @@ export function enableProgram() {
     method: 'get'
   })
 }
+
+export function getProgramConstant() {
+  return request({
+    url: '/program/constant',
+    method: 'get'
+  })
+}

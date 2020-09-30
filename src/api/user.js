@@ -18,7 +18,7 @@ export function getInfo() {
 export function logout() {
   return request({
     url: '/user/logout',
-    method: 'post'
+    method: 'put'
   })
 }
 
@@ -67,15 +67,15 @@ export function getStudentUsers() {
 }
 
 export function getAdminUsers() {
-    return request({
-        url: '/user',
-        method: 'get'
-    })
+  return request({
+    url: '/user',
+    method: 'get'
+  })
 }
 
 export function getRoleUsers() {
-    return request({
-        url: '/roles',
-        method: 'get'
-    })
+  return request({
+    url: '/roles',
+    method: 'get'
+  })
 }

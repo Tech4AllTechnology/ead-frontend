@@ -68,14 +68,14 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="Criar matérias automaticamente" prop="recognized_by_mec">
-          <el-select v-model="program.automatic">
+        <el-form-item v-if="dialogType!=='edit'" label="Criar matérias automaticamente" prop="automatic_courses">
+          <el-select v-model="program.automatic_courses">
             <el-option value="1" label="Sim">Sim</el-option>
             <el-option value="0" label="Não">Não</el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item v-if="program.automatic == '1'" label="Quantidade de matérias" prop="recognized_by_mec">
+        <el-form-item v-if="program.automatic_courses == '1' && dialogType!=='edit'" label="Quantidade de matérias" prop="recognized_by_mec">
           <el-input-number v-model="program.quantity_courses" :min="1" />
         </el-form-item>
       </el-form>
@@ -102,7 +102,7 @@ const defaultProgram = {
   name: '',
   code: '',
   status: '',
-  automatic: '',
+  automatic_courses: '',
   quantity_courses: '',
   recognized_by_mec: '',
   program_type: '',
