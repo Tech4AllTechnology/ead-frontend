@@ -38,7 +38,14 @@ export function enableProgram() {
 
 export function getProgramConstant() {
   return request({
-    url: '/program/constant',
+    url: '/program/enable',
+    method: 'get'
+  })
+}
+
+export function getProgramCourses(id) {
+  return request({
+    url: `/program/${id}/courses`,
     method: 'get'
   })
 }

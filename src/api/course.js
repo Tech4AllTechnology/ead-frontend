@@ -28,3 +28,9 @@ export function deleteCourse(id) {
     method: 'delete'
   })
 }
+export function getCoursePrograms(id) {
+    return request({
+        url: `/course/${id}/program`,
+        method: 'get'
+    })
+}

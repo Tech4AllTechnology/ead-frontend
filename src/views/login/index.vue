@@ -45,7 +45,7 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
+      <el-button :loading="loading" type="primary" :disabled="active" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
         {{ $t('login.logIn') }}
       </el-button>
     </el-form>
@@ -96,7 +96,8 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      url: 'http://localhost:9527/sge.png'
+      url: 'http://localhost:9527/sge.png',
+      active: false
     }
   },
   watch: {
@@ -132,6 +133,7 @@ export default {
       })
     },
     handleLogin() {
+      this.active = true;
       this.$refs.loginForm.validate(valid => {
           console.log(valid)
           console.log(this.loginForm)
@@ -144,10 +146,12 @@ export default {
             })
             .catch(() => {
                 this.loading = false
+                this.active = false;
             })
         } else {
           console.log('error submit!!')
-          return false
+            this.active = false
+            return false
         }
       })
     }

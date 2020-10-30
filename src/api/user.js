@@ -79,3 +79,10 @@ export function getRoleUsers() {
     method: 'get'
   })
 }
+
+export function getUserCourse(id) {
+  return request({
+    url: `/user/${id}/program`,
+    method: 'get'
+  })
+}

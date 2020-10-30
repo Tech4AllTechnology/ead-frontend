@@ -5,44 +5,36 @@
     </el-button>
 
     <el-table :data="usersList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column label="Nome" align="center" fixed>
+      <el-table-column label="Nome" align="center" fixed >
         <template slot-scope="scope">
               {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="E-mail" align="center" fixed>
+    <el-table-column label="Matricula" align="center" fixed >
+        <template slot-scope="scope">
+            {{ scope.row.application }}
+        </template>
+    </el-table-column>
+      <el-table-column label="E-mail" align="center" fixed >
         <template slot-scope="scope">
               {{ scope.row.email }}
         </template>
       </el-table-column>
-      <el-table-column label="Status" align="center" fixed>
+      <el-table-column label="Status" align="center" fixed width="100">
         <template slot-scope="scope">
               {{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column label="Tipo" align="center" fixed>
+      <el-table-column label="Tipo" align="center" fixed width="150">
           <template slot-scope="scope">
               {{ scope.row.user_type }}
           </template>
       </el-table-column>
-      <el-table-column align="center" label="Operações" fixed>
+      <el-table-column align="center" label="Operações" fixed width="300">
         <template slot-scope="scope">
-          <el-button
-            v-if="scope.row.status == 'ativo'"
-            type="primary"
-            size="small"
-            @click="enableDisable(scope, 0)"
-          >
-            {{ $t('software.disable') }}
-          </el-button>
-          <el-button
-            v-if="scope.row.status == 'inativo'"
-            type="primary"
-            size="small"
-            @click="enableDisable(scope, 1)"
-          >
-            {{ $t('software.enable') }}
-          </el-button>
+            <el-button v-if="scope.row.user_type == 'Aluno'" type="primary" size="small" @click="listUserCourse(scope)">
+                {{ $t('users.ListCourse') }}
+            </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('users.editUser') }}
           </el-button>
@@ -60,13 +52,13 @@
                 <div class="form-group el-form--inline">
                     <el-form-item prop="name" style="width: 50%">
                         <label style="display: block">Nome</label>
-                        <el-input ref="name" v-model="user.name" required placeholder="Nome" style="width: 160%"/>
+                        <el-input ref="name" v-model="user.name" required placeholder="Nome" style="width: 120%"/>
                     </el-form-item>
 
                     <el-form-item prop="application">
                         <label style="display: block">Matricula</label>
                         <el-input disabled v-model.number="user.application" placeholder="Matricula" required
-                                  style="width: 160%"/>
+                                  style="width: 120%"/>
                     </el-form-item>
                 </div>
             </div>
@@ -76,14 +68,14 @@
                     <el-form-item prop="email" style="width: 50%">
                         <label style="display: block">E-mail</label>
                         <el-input ref="email" v-model="user.email" placeholder="User Email" required type="e-mail"
-                                  style="width: 160%"/>
+                                  style="width: 120%"/>
                     </el-form-item>
 
 
                     <el-form-item prop="birthday">
                         <label style="display: block">Data de Nascimento</label>
 
-                        <el-date-picker style="width: 140%"
+                        <el-date-picker style="width: 120%"
                                         v-model="user.birthday"
                                         type="date"
                                         placeholder="Selecione a data de Nascimento"
@@ -101,14 +93,14 @@
                 <div class="form-group el-form--inline">
                     <el-form-item prop="status" style="width: 50%">
                         <label style="display: block; text-align: center"> Status</label>
-                        <el-select ref="status" v-model="user.status" required filterable style="width: 150%">
+                        <el-select ref="status" v-model="user.status" required filterable style="width: 120%">
                             <el-option value="1" label="Ativo" selected>Ativo</el-option>
                             <el-option value="0" label="Inativo">Inativo</el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item prop="type">
                         <label style="display: block; text-align: center">Tipo</label>
-                        <el-select v-model="user.type" filterable required style="width: 150%">
+                        <el-select v-model="user.type" filterable required style="width: 120%">
                             <el-option
                                     v-for="item in rolesList"
                                     :key="item.id"
@@ -125,7 +117,7 @@
                     <el-form-item prop="marital_status" style="width: 50%">
                         <label style="display: block; text-align: center">Estado Civil</label>
                         <el-select ref="marital_status" filterable v-model="user.marital_status" required
-                                   style="width: 150%">
+                                   style="width: 120%">
                             <el-option value="SOLTEIRO" label="Solteiro(a)" selected>Solteiro(a)</el-option>
                             <el-option value="CASADO" label="Casado(a)">Casado(a)</el-option>
                             <el-option value="VIUVO" label="Viuvo(a)">Viuvo(a)</el-option>
@@ -136,7 +128,7 @@
                         <label style="display: block; text-align: center">Nivel de escolaridade</label>
 
                         <el-select ref="scholarship_level" v-model="user.scholarship_level" filterable required
-                                   style="width: 150%">
+                                   style="width: 120%">
                             <el-option value="FUNDAMENTAL_NAO_COMPLETO" label="Fundamental Não Completo" selected>
                                 Fundamental Não
                                 Completo
@@ -162,7 +154,7 @@
                 <div class="form-group el-form--inline">
                     <el-form-item prop="scholarship_conclusion_date" style="width: 50%">
                         <label style="display: block; text-align: center">Data de Conclusão</label>
-                        <el-date-picker style="width: 140%"
+                        <el-date-picker style="width: 120%"
                                         v-model="user.scholarship_conclusion_date"
                                         type="date"
                                         placeholder="Selecione a data de Conclusão da escolaridade"
@@ -176,7 +168,7 @@
                     <el-form-item prop="latest_school">
                         <label style="display: block; text-align: center">Última instituição</label>
                         <el-input v-model="user.latest_school" placeholder="Última instituição" required
-                                  style="width: 160%"/>
+                                  style="width: 120%"/>
                     </el-form-item>
                 </div>
             </div>
@@ -187,12 +179,12 @@
                         <label style="display: block; text-align: center">Numero da Identidade</label>
 
                         <el-input v-model="user.identity_number" placeholder="Numero da Identidade" required
-                                  style="width: 160%"/>
+                                  style="width: 120%"/>
                     </el-form-item>
 
                     <el-form-item prop="issuing_authority">
                         <label style="display: block; text-align: center">Emissor da Identidade</label>
-                        <el-input v-model="user.issuing_authority" placeholder="Emissor" required style="width: 160%"/>
+                        <el-input v-model="user.issuing_authority" placeholder="Emissor" required style="width: 120%"/>
                     </el-form-item>
                 </div>
             </div>
@@ -201,7 +193,7 @@
                 <div class="form-group el-form--inline">
                     <el-form-item prop="issuing_date" style="width: 50%">
                         <label style="display: block; text-align: center">Data de Emissão</label>
-                        <el-date-picker style="width: 140%"
+                        <el-date-picker style="width: 120%"
                                         v-model="user.issuing_date"
                                         type="date"
                                         placeholder="Selecione a data de Emissão"
@@ -213,7 +205,7 @@
 
                     <el-form-item prop="issuing_id_state">
                         <label style="display: block; text-align: center">Estado da Identidade</label>
-                        <el-select v-model="user.issuing_id_state" filterable required style="width: 150%">
+                        <el-select v-model="user.issuing_id_state" filterable required style="width: 120%">
                             <el-option
                                     v-for="item in stateList"
                                     :key="item.id"
@@ -230,12 +222,12 @@
 
                     <el-form-item prop="cpf" style="width: 50%">
                         <label style="display: block; text-align: center">CPF</label>
-                        <el-input v-model="user.cpf" placeholder="CPF" required style="width: 160%"/>
+                        <el-input v-model="user.cpf" placeholder="CPF" required style="width: 120%"/>
                     </el-form-item>
 
                     <el-form-item prop="nacionalidade">
                         <label style="display: block; text-align: center">Nacionalidade</label>
-                        <el-select v-model="user.naturalness_country" filterable required style="width: 150%">
+                        <el-select v-model="user.naturalness_country" filterable required style="width: 120%">
                             <el-option
                                     v-for="item in countriesList"
                                     :key="item.id"
@@ -252,12 +244,12 @@
 
                     <el-form-item prop="profession" style="width: 50%">
                         <label style="display: block; text-align: center">Profissão</label>
-                        <el-input v-model="user.profession" placeholder="Profissão" required style="width: 160%"/>
+                        <el-input v-model="user.profession" placeholder="Profissão" required style="width: 120%"/>
                     </el-form-item>
 
                     <el-form-item prop="naturalness_state">
                         <label style="display: block; text-align: center">Estado de Nascimento</label>
-                        <el-select v-model="user.naturalness_state" filterable required style="width: 160%">
+                        <el-select v-model="user.naturalness_state" filterable required style="width: 120%">
                             <el-option
                                     v-for="item in stateList"
                                     :key="item.id"
@@ -274,13 +266,13 @@
                     <el-form-item prop="voter_id_number" style="width: 50%">
                         <label style="display: block; text-align: center">Titulo de Eleitor</label>
                         <el-input v-model="user.voter_id_number" placeholder="Titulo de Eleitor" required
-                                  style="width: 160%"/>
+                                  style="width: 120%"/>
                     </el-form-item>
 
                     <el-form-item prop="voter_id_zone">
                         <label style="display: block; text-align: center">Zona de Eleitorado</label>
                         <el-input v-model="user.voter_id_zone" placeholder="Zona de Eleitorado" required
-                                  style="width: 160%"/>
+                                  style="width: 120%"/>
                     </el-form-item>
                 </div>
             </div>
@@ -291,13 +283,13 @@
                     <el-form-item prop="voter_id_section" style="width: 50%">
                         <label style="display: block; text-align: center">Seção de Eleitorado</label>
                         <el-input v-model="user.voter_id_section" placeholder="Seção de Eleitorado" required
-                                  style="width: 160%"/>
+                                  style="width: 120%"/>
                     </el-form-item>
 
 
                     <el-form-item prop="voter_id_state">
                         <label style="display: block; text-align: center"> Estado do Titulo de Eleitor</label>
-                        <el-select v-model="user.voter_id_state" filterable required style="width: 150%">
+                        <el-select v-model="user.voter_id_state" filterable required style="width: 120%">
                             <el-option
                                     v-for="item in stateList"
                                     :key="item.id"
@@ -314,14 +306,14 @@
 
                     <el-form-item prop="cep" style="width: 50%">
                         <label style="display: block; text-align: center">CEP</label>
-                        <el-input v-model="user.cep" placeholder="CEP" required style="width: 160%"/>
+                        <el-input v-model="user.cep" placeholder="CEP" required style="width: 120%"/>
                     </el-form-item>
 
 
                     <el-form-item prop="state">
                         <label style="display: block; text-align: center">Estado</label>
 
-                        <el-select v-model="user.state_id" filterable required style="width: 150%">
+                        <el-select v-model="user.state_id" filterable required style="width: 120%">
                             <el-option
                                     v-for="item in stateList"
                                     :key="item.id"
@@ -338,13 +330,13 @@
 
                     <el-form-item prop="city" style="width: 50%">
                         <label style="display: block; text-align: center">Cidade</label>
-                        <el-input v-model="user.city" placeholder="Cidade" required style="width: 160%"/>
+                        <el-input v-model="user.city" placeholder="Cidade" required style="width: 120%"/>
                     </el-form-item>
 
 
                     <el-form-item prop="neighborhood">
                         <label style="display: block; text-align: center">Bairro</label>
-                        <el-input v-model="user.neighborhood" placeholder="Neighborhood" required style="width: 160%"/>
+                        <el-input v-model="user.neighborhood" placeholder="Neighborhood" required style="width: 120%"/>
                     </el-form-item>
                 </div>
             </div>
@@ -353,14 +345,14 @@
                 <div class="form-group el-form--inline">
                     <el-form-item prop="street" style="width: 50%">
                         <label style="display: block; text-align: center">Rua</label>
-                        <el-input v-model="user.street" placeholder="Street" required style="width: 160%"/>
+                        <el-input v-model="user.street" placeholder="Street" required style="width: 120%"/>
                     </el-form-item>
 
 
                     <el-form-item prop="number">
                         <label style="display: block; text-align: center">Número</label>
                         <el-input-number v-model="user.number" :min="0" placeholder="Number" required
-                                         style="width: 125%"/>
+                                         style="width: 120%"/>
                     </el-form-item>
                 </div>
             </div>
@@ -369,17 +361,27 @@
                 <div class="form-group el-form--inline">
                     <el-form-item prop="mother_name" style="width: 50%">
                         <label style="display: block; text-align: center">Nome da Mãe</label>
-                        <el-input v-model="user.mother_name" placeholder="Nome da Mãe" required style="width: 160%"/>
+                        <el-input v-model="user.mother_name" placeholder="Nome da Mãe" required style="width: 120%"/>
                     </el-form-item>
 
 
                     <el-form-item prop="father_name">
                         <label style="display: block; text-align: center">Nome da Pai</label>
-                        <el-input v-model="user.father_name" placeholder="Nome da Pai" required style="width: 160%"/>
+                        <el-input v-model="user.father_name" placeholder="Nome da Pai" required style="width: 120%"/>
                     </el-form-item>
                 </div>
             </div>
-
+            <el-form-item>
+                <label style="display: block">Polo</label>
+                <el-select v-model="user.university_campus.id">
+                    <el-option
+                            v-for="campusToShow in this.universityCampusList"
+                            :key="campusToShow.id"
+                            :label="campusToShow.name"
+                            :value="campusToShow.id"
+                    />
+                </el-select>
+            </el-form-item>
             <el-form-item prop="telephones">
                 <label style="display: block">Telefones</label>
                 <div v-for="(line, index) in user.telephones" :key="index" class="row" style="margin-top: 10px">
@@ -390,7 +392,7 @@
                                    @click="addLine"/>
                     </div>
                 </div>
-        </el-form-item>
+            </el-form-item>
 
         <el-form-item label="Facebook" prop="facebook_link">
             <el-input v-model="user.facebook_link" placeholder="Perfil Facebook"/>
@@ -401,6 +403,25 @@
         <el-form-item label="Whatsapp" prop="whatsapp_number">
             <el-input v-model="user.whatsapp_number" placeholder="Numero Whatsapp"/>
         </el-form-item>
+
+            <el-form-item>
+                <label style="display: block">Cursos</label>
+                <div v-for="(line, index) in user.programs" :key="index" class="row" style="margin-top: 10px">
+                    <div class="row">
+                        <el-select v-model="line.id" label="Courses">
+                            <el-option
+                                    v-for="item in programList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                        <el-button type="danger" round icon="el-icon-delete" @click="removeLineCourse(index)"/>
+                        <el-button v-if="index + 1 === user.programs.length" type="primary" round
+                                   icon="el-icon-plus" @click="addLineCourse"/>
+                    </div>
+                </div>
+            </el-form-item>
 
       </el-form>
       <div style="text-align:right;">
@@ -413,17 +434,34 @@
       </div>
     </el-dialog>
 
+      <el-dialog :visible.sync="listCourseVisible" :title="'Cursos'">
+          <el-table :data="courseList" style="width: 100%;margin-top:30px;" border>
+              <el-table-column align="center" label="Nome do Curso" width="220" fixed>
+                  <template slot-scope="scope">
+                      {{ scope.row.name }}
+                  </template>
+              </el-table-column>
+              <el-table-column align="center" label="Status" fixed>
+                  <template slot-scope="scope">
+                      {{ scope.row.status }}
+                  </template>
+              </el-table-column>
+          </el-table>
+      </el-dialog>
+
   </div>
 </template>
 <script>
 import { deepClone } from '@/utils'
-import {getUsers, addUser, deleteUser, updateUser, getRoleUsers} from '@/api/user'
+import {getUsers, addUser, deleteUser, updateUser, getRoleUsers, getUserCourse} from '@/api/user'
 import { getStates } from '@/api/state'
 import { validUsername } from '@/utils/validate'
 import {permission} from '@/directive/permission/index.js'
 import {checkPermission} from '@/utils/permission'
 import {store} from '@/store'
 import {getCountries} from '@/api/country'
+import { enableProgram } from '@/api/program'
+import { getCampus } from '@/api/university_campus'
 
 const defaultUser = {
     id: '',
@@ -456,8 +494,12 @@ const defaultUser = {
     type: '',
     cep: '',
     state_id: '',
-    telephones: []
-
+    telephones: [],
+    programs: [],
+    university_campus: {
+        id: '',
+        name: ''
+    }
 }
 
 const types = {
@@ -487,6 +529,13 @@ const sendStatus = {
   'Ativo': 1,
   'Inativo': 0
 }
+
+const defaultProgram = {
+    id: '',
+    name: '',
+    code: ''
+}
+
 export default {
   directives: { permission },
   data() {
@@ -548,6 +597,7 @@ export default {
       formReady: false,
       loading: false,
       dialogVisible: false,
+        listCourseVisible: false,
       dialogTelephone: false,
       dialogType: 'new',
       checkStrictly: false,
@@ -555,7 +605,11 @@ export default {
       stateList: [],
         rolesList: [],
         countriesList: [],
-      typesList: Object.assign({}, types),
+        courseList: [],
+        programList: [],
+        universityCampusList: [],
+        program: Object.assign({}, defaultProgram),
+        typesList: Object.assign({}, types),
       statusList: Object.assign({}, status),
       sendTypesList: Object.assign({}, sendTypes),
       sendStatusList: Object.assign({}, sendStatus),
@@ -585,6 +639,8 @@ export default {
     this.getStates()
       this.getRoles()
       this.getCountries()
+      this.getProgram()
+      this.getCampus()
   },
   methods: {
     closeDialog() {
@@ -607,12 +663,21 @@ export default {
           const countries = await getCountries()
           this.countriesList = countries.data
       },
+      async getProgram() {
+          const res = await enableProgram()
+          this.programList = res.data
+      },
+      async getCampus() {
+          const res = await getCampus()
+          this.universityCampusList = res.data
+      },
     handleaddUser() {
       this.user = Object.assign({}, defaultUser)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
         this.addLine()
+        this.addLineCourse()
       this.dialogType = 'new'
       this.dialogVisible = true
     },
@@ -620,9 +685,17 @@ export default {
       this.dialogType = 'edit'
         this.user = deepClone(scope.row)
         this.addLine()
-      this.dialogVisible = true
+        this.addLineCourse()
+        this.dialogVisible = true
       this.checkStrictly = true
     },
+
+     async listUserCourse(scope) {
+          this.user = deepClone(scope.row)
+          const res = await getUserCourse(this.user.id)
+          this.courseList = this.changeType(res.data)
+         this.listCourseVisible = true
+      },
 
     handleTelephone(scope) {
       this.dialogType = 'edit'
@@ -768,6 +841,25 @@ export default {
       removeLine(lineId) {
           if (this.user.telephones.length > 1) {
               this.user.telephones.splice(lineId, 1)
+          }
+      },
+      addLineCourse() {
+          console.log(this.user.programs)
+          const checkEmptyLines = this.user.programs.filter(line => line.id === null)
+          if (checkEmptyLines.length >= 1 && this.user.programs.length > 0) {
+              return
+          }
+          this.user.programs.push({
+              id: null,
+              name: null
+          })
+      },
+      removeLineCourse(lineId) {
+          console.log(this.user.programs)
+          console.log(lineId)
+          if (this.user.programs.length > 1) {
+              console.log('Entrou no item')
+              this.user.programs.splice(lineId, 1)
           }
       }
   }

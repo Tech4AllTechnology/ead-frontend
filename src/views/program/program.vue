@@ -22,6 +22,9 @@
       </el-table-column>
       <el-table-column align="center" label="Operações" fixed>
         <template slot-scope="scope">
+          <el-button type="primary" size="small" @click="listCourse(scope)">
+            {{ $t('program.listCourses') }}
+          </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('program.edit') }}
           </el-button>
@@ -88,12 +91,34 @@
         </el-button>
       </div>
     </el-dialog>
+
+
+
+      <el-dialog :visible.sync="listCourseVisible" :title="listName">
+          <el-table :data="courseList" style="width: 100%;margin-top:30px;" border>
+              <el-table-column align="center" label="Nome da Matéria" width="220" fixed>
+                  <template slot-scope="scope">
+                      {{ scope.row.name }}
+                  </template>
+              </el-table-column>
+              <el-table-column align="center" label="Periodo" fixed>
+                  <template slot-scope="scope">
+                      {{ scope.row.period }}
+                  </template>
+              </el-table-column>
+              <el-table-column align="center" label="Status" fixed>
+                  <template slot-scope="scope">
+                      {{ scope.row.status }}
+                  </template>
+              </el-table-column>
+          </el-table>
+      </el-dialog>
   </div>
 </template>
 
 <script>
 import { deepClone } from '@/utils'
-import { getProgram, addProgram, deleteProgram, updateProgram } from '@/api/program'
+import { getProgram, addProgram, deleteProgram, updateProgram, getProgramCourses } from '@/api/program'
 import { getAdminUsers } from '@/api/user'
 import { permission } from '@/directive/permission/index.js'
 
@@ -108,6 +133,16 @@ const defaultProgram = {
   program_type: '',
   responsible_id: '',
   responsible: []
+}
+
+const defaultCourse = {
+    id: '',
+    name: '',
+    code: '',
+    credit: '',
+    status: '',
+    period: '',
+    program_items: []
 }
 
 const status = {
@@ -186,11 +221,13 @@ export default {
     return {
       loading: false,
       program: Object.assign({}, defaultProgram),
+      courseList: [],
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
       programList: [],
       userList: [],
+      listCourseVisible: false,
       statusList: Object.assign({}, status),
       recognizedByMec: Object.assign({}, recognizedByMec),
       programType: Object.assign({}, programType),
@@ -202,7 +239,8 @@ export default {
         name: [{ required: true, trigger: 'blur', validator: validateName }],
         recognized_by_mec: [{ required: true, trigger: 'blur', validator: validateReconizedByMEC }],
         program_type: [{ required: true, trigger: 'blur', validator: validateProgramType }]
-      }
+      },
+      listName: ""
     }
   },
   computed: {
@@ -241,6 +279,14 @@ export default {
       this.dialogVisible = true
       this.checkStrictly = true
       this.program = deepClone(scope.row)
+    },
+    async listCourse(scope) {
+        this.dialogVisible = false
+        this.program = deepClone(scope.row)
+        const res = await getProgramCourses(this.program.id)
+        this.courseList = this.changeType(res.data)
+        this.listName = "Lista de Matérias do Curso: " + this.program.name
+        this.listCourseVisible = true
     },
     handleDelete({ $index, row }) {
       this.$confirm('Deseja desabilitar o curso? \n Todas as matérias e turmas serão canceladas.', 'Atenção', {

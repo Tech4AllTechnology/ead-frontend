@@ -27,6 +27,9 @@
       </el-table-column>
       <el-table-column align="center" label="Operações" fixed>
         <template slot-scope="scope">
+          <el-button type="primary" size="small" @click="listProgram(scope)">
+            {{ $t('program.listCourses') }}
+          </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
             {{ $t('course.edit') }}
           </el-button>
@@ -105,13 +108,33 @@
         </el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="listCourseVisible" :title="'Cursos'">
+      <el-table :data="programList" style="width: 100%;margin-top:30px;" border>
+        <el-table-column align="center" label="Nome da Matéria" width="220" fixed>
+          <template slot-scope="scope">
+            {{ scope.row.name }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="Periodo" fixed>
+          <template slot-scope="scope">
+            {{ scope.row.period }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="Status" fixed>
+          <template slot-scope="scope">
+            {{ scope.row.status }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { deepClone } from '@/utils'
-import { getCourse, addCourse, deleteCourse, updateCourse } from '@/api/course'
+import { getCourse, addCourse, deleteCourse, updateCourse, getCoursePrograms } from '@/api/course'
 import { enableProgram } from '@/api/program'
+import program from "../../../mock/program";
 
 const defaultCourse = {
   id: '',
@@ -139,6 +162,19 @@ const sendStatus = {
   'Inativo': 0
 }
 
+const programType = {
+    1: 'Graduação',
+    2: 'Pós-Graduação',
+    3: 'Técnico',
+    4: 'Livre'
+}
+
+const recognizedByMec = {
+    1: 'Sim',
+    0: 'Não'
+}
+
+
 export default {
   data() {
     const validateStatus = (rule, value, callback) => {
@@ -158,16 +194,19 @@ export default {
     }
     return {
       blockRemoval: true,
-        program_items: [],
+      program_items: [],
       course: Object.assign({}, defaultCourse),
       program: Object.assign({}, defaultProgram),
       dialogVisible: false,
       dialogType: 'new',
       checkStrictly: false,
-      courseList: [],
+        listCourseVisible: false,
+        courseList: [],
       programList: [],
       statusList: Object.assign({}, status),
-      sendStatusList: Object.assign({}, sendStatus),
+        recognizedByMec: Object.assign({}, recognizedByMec),
+        programType: Object.assign({}, programType),
+        sendStatusList: Object.assign({}, sendStatus),
       courseRules: {
         status: [{ required: true, trigger: 'blur', validator: validateStatus }],
         credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
@@ -205,6 +244,13 @@ export default {
       const res = await enableProgram()
       this.programList = res.data
     },
+      async listProgram(scope) {
+          this.dialogVisible = false
+          this.course = deepClone(scope.row)
+          const res = await getCoursePrograms(this.course.id)
+          this.programList = this.changeType(res.data)
+          this.listCourseVisible = true
+      },
     handleaddCourse() {
         this.dialogType = 'new'
       this.course = Object.assign({}, defaultCourse)
@@ -292,15 +338,36 @@ export default {
     },
 
     changeType(courses) {
-      if (Array.isArray(courses)) {
-        for (let index = 0; index < courses.length; index++) {
-          courses[index].status = this.statusList[courses[index].status]
-        }
-        return courses
-      }
-      courses.status = this.statusList[courses.status]
-      return courses
-    },
+          if (Array.isArray(courses)) {
+              for (let index = 0; index < courses.length; index++) {
+                  if (this.statusList[courses[index].status]) {
+                      courses[index].status = this.statusList[courses[index].status]
+                  }
+
+                  if (this.recognizedByMec[[courses[index].recognized_by_mec]]) {
+                      courses[index].recognized_by_mec = this.recognizedByMec[courses[index].recognized_by_mec]
+                  }
+
+                  if (this.programType[[courses[index].program_type]]) {
+                      courses[index].program_type = this.programType[courses[index].program_type]
+                  }
+              }
+              return courses
+          }
+          if (this.statusList[courses.status]) {
+              courses.status = this.statusList[courses.status]
+          }
+
+          if (this.recognizedByMec[courses.recognized_by_mec]) {
+              courses.recognized_by_mec = this.recognizedByMec[courses.recognized_by_mec]
+          }
+
+          if (this.programType[courses.program_type]) {
+              courses.program_type = this.programType[courses.program_type]
+          }
+
+          return courses
+      },
     changeSendType(course) {
       if (this.sendStatusList[course.status] || course.status == 'Inativo') {
         course.status = this.sendStatusList[course.status]

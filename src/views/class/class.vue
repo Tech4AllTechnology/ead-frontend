@@ -57,7 +57,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Matéria" align="center" fixed>
+      <el-table-column label="Curso" align="center" fixed>
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
             <p>Turma: {{ scope.row.name }}</p>
@@ -77,13 +77,13 @@
               Semestre: Anual</p>
 
             <div slot="reference" class="name-wrapper">
-              {{ scope.row.course.name }}
+              {{ scope.row.program.name }}
             </div>
           </el-popover>
         </template>
       </el-table-column>
 
-      <el-table-column label="Professor" align="center" fixed>
+      <el-table-column label="Coordenador" align="center" fixed>
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
             <p>Turma: {{ scope.row.name }}</p>
@@ -136,14 +136,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item v-if="dialogType!=='edit'" label="Tipo de Turma" prop="program.id">
-          <el-select v-model="classes.type">
-            <el-option value="1" label="Curso Constante">Curso Constante</el-option>
-            <el-option value="2" label="Matéria">Matéria</el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item v-if="dialogType!=='edit' && classes.type == '1'" label="Curso" prop="program.id">
+        <el-form-item label="Curso" prop="program.id">
           <el-select v-model="classes.program.id">
             <el-option
               v-for="programToShow in this.programList"
@@ -153,23 +146,24 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="classes.course.program_items.automatic_courses != '1' || dialogType==='edit' || classes.type != '1'" label="Matéria" prop="program.id">
-          <el-select v-model="classes.course.id">
-            <el-option
-              v-for="courseToShow in this.courseList"
-              :key="courseToShow.id"
-              :label="courseToShow.name"
-              :value="courseToShow.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Professor" prop="master.id">
+        <el-form-item label="Coordenador" prop="master.id">
           <el-select v-model="classes.master.id">
             <el-option
               v-for="masterToShow in this.masterList"
               :key="masterToShow.id"
               :label="masterToShow.name"
               :value="masterToShow.id"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="Polo">
+          <el-select v-model="classes.university_campus.id">
+            <el-option
+                    v-for="campusToShow in this.universityCampusList"
+                    :key="campusToShow.id"
+                    :label="campusToShow.name"
+                    :value="campusToShow.id"
             />
           </el-select>
         </el-form-item>
@@ -331,6 +325,7 @@ import { getClass, addClass, deleteClass, updateClass, addLack } from '@/api/cla
 import { getCourse } from '@/api/course'
 import { getProgramConstant } from '@/api/program'
 import { getMasterUsers } from '@/api/user'
+import { getCampus } from '@/api/university_campus'
 
 const defaultClass = {
   id: '',
@@ -353,6 +348,10 @@ const defaultClass = {
   master: {
     id: '',
     name: ''
+  },
+  university_campus: {
+      id: '',
+      name: ''
   },
   shift: '',
   semester: '',
@@ -524,12 +523,12 @@ export default {
       masterList: [],
       studentsList: [],
       studentsClassList: [],
+      universityCampusList: [],
       classesRules: {
         status: [{ required: true, trigger: 'blur', validator: validateStatus }],
         shift: [{ required: true, trigger: 'blur', validator: validateEmpty }],
         credit: [{ required: true, trigger: 'blur', validator: validateEmpty }],
         semester: [{ required: true, trigger: 'blur', validator: validateEmpty }],
-        'master.id': [{ required: true, trigger: 'blur', validator: validateEmpty }]
       },
       pickerOptions: {
         disabledDate(time) {
@@ -574,6 +573,7 @@ export default {
     this.getMaster()
     this.getCourses()
     this.getPrograms()
+    this.getCampus()
   },
   methods: {
     async getClass() {
@@ -591,6 +591,10 @@ export default {
     async getPrograms() {
       const res = await getProgramConstant()
       this.programList = res.data
+    },
+    async getCampus() {
+        const res = await getCampus()
+        this.universityCampusList = res.data
     },
     async handleaddClass() {
       this.classes = Object.assign({}, defaultClass)
@@ -670,11 +674,22 @@ export default {
             }
           }
 
-          for (let index = 0; index < this.courseList.length; index++) {
-            if (this.classes.course.id === this.courseList[index].id) {
-              this.classes.course.name = this.courseList[index].name
-              break
-            }
+          if (this.classes.course) {
+              for (let index = 0; index < this.courseList.length; index++) {
+                  if (this.classes.course.id === this.courseList[index].id) {
+                      this.classes.course.name = this.courseList[index].name
+                      break
+                  }
+              }
+          }
+
+          if (this.classes.program) {
+              for (let index = 0; index < this.programList.length; index++) {
+                  if (this.classes.program.id === this.programList[index].id) {
+                      this.classes.program.name = this.programList[index].name
+                      break
+                  }
+              }
           }
 
           this.formReady = true

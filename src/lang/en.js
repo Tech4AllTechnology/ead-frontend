@@ -118,11 +118,12 @@ export default {
     delete: 'Deletar',
     confirm: 'Confirmar',
     cancel: 'Cancelar',
-    telephones: 'Check Numbers'
+    telephones: 'Check Numbers',
+    ListCourse: 'Cursos'
   },
   software: {
     addSoftware: 'Novo Software',
-      edit: 'Editar ',
+    edit: 'Editar ',
     tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
     delete: 'Deletar',
     confirm: 'Confirmar',
@@ -152,7 +153,8 @@ export default {
     disable: 'Inativar',
     enable: 'Ativar',
     softwares: 'Softwares',
-    nonUniqueProgram: 'The name has to be unique!'
+    nonUniqueProgram: 'The name has to be unique!',
+    listCourses: 'Lista de Matérias'
   },
   course: {
     addCourse: 'Nova Matéria',
